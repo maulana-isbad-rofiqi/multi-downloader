@@ -1,11 +1,10 @@
-// Simple Service Worker
+// Service Worker
 const CACHE_NAME = 'multi-downloader-v1';
-const urlsToCache = ['/', '/index.html'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      .then(cache => cache.addAll(['/']))
   );
 });
 
