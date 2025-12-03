@@ -3,158 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Downloader - Unduh Video & Musik</title>
-    <meta name="description" content="Aplikasi pengunduh video multi-platform cepat dan ringan.">
-    <meta name="theme-color" content="#121826">
-
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="assets/icon-192.png" type="image/png">
+    <meta name="theme-color" content="#6366f1">
+    <title>Multi Downloader • Itsbad</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3488/3488806.png" type="image/png">
     
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                              radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .loader {
+            border-top-color: #6366f1;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* PWA Install Popup Animation */
+        .pwa-popup {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform: translateY(200%);
+        }
+        .pwa-popup.show {
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="header-container">
-                <div class="logo">
-                    <i class="fas fa-bolt logo-icon"></i>
-                    <h1>Multi Downloader</h1>
-                </div>
+<body class="text-white selection:bg-indigo-500 selection:text-white">
+
+    <nav class="w-full p-4 glass sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cloud-arrow-down text-indigo-400 text-xl"></i>
+                <h1 class="font-bold text-xl tracking-wider">M-Downloader</h1>
+            </div>
+            <button onclick="document.getElementById('aboutModal').classList.remove('hidden')" class="text-sm font-semibold hover:text-indigo-400 transition">
+                <i class="fa-solid fa-circle-info"></i> Tentang
+            </button>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        
+        <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400">
+                Unduh Semua Media
+            </h2>
+            <p class="text-gray-400">Pilih layanan, tempel tautan, dan unduh secara instan.</p>
+        </div>
+
+        <div class="grid grid-cols-3 md:grid-cols-4 gap-3 mb-8" id="serviceGrid">
+            </div>
+
+        <div class="glass rounded-2xl p-6 shadow-2xl mb-8 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+            
+            <label id="inputLabel" class="block text-sm font-medium text-gray-300 mb-2">Pilih layanan di atas terlebih dahulu</label>
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="urlInput" placeholder="https://..." disabled 
+                    class="w-full bg-slate-900/50 border border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition text-white placeholder-gray-500">
+                <button onclick="fetchMedia()" id="downloadBtn" disabled
+                    class="bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 py-3 rounded-xl font-bold transition shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2">
+                    <span id="btnText">Proses</span>
+                    <i class="fa-solid fa-bolt"></i>
+                </button>
+            </div>
+            <div id="loading" class="hidden mt-4 text-center">
+                <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-700 h-8 w-8 mx-auto"></div>
+                <p class="text-xs text-gray-400 mt-2">Sedang memproses data...</p>
+            </div>
+        </div>
+
+        <div id="resultArea" class="hidden glass rounded-2xl p-6 shadow-2xl border-t-4 border-indigo-500">
+            <h3 class="text-lg font-bold mb-4 border-b border-gray-700 pb-2">Preview Media</h3>
+            
+            <div class="flex flex-col items-center">
+                <div id="mediaPreview" class="w-full rounded-lg overflow-hidden mb-4 bg-black/50 min-h-[150px] flex items-center justify-center relative">
+                    </div>
                 
-                <nav>
-                    <ul>
-                        <li><a href="#" id="homeLink" class="active"><i class="fas fa-home"></i> Beranda</a></li>
-                        <li><a href="#" id="aboutLink"><i class="fas fa-info-circle"></i> Tentang</a></li>
-                    </ul>
-                </nav>
+                <h4 id="mediaTitle" class="text-center font-semibold text-lg mb-2 text-gray-200"></h4>
                 
-                <p class="tagline">Unduh konten dari berbagai platform dengan satu kode</p>
-            </div>
-        </header>
-
-        <main class="main-content active" id="homePage">
-            <div class="main-card">
-                <div class="card-title">
-                    <i class="fas fa-download"></i>
-                    <span>Tempel Tautan</span>
-                </div>
-
-                <div class="url-input-container">
-                    <div class="url-input-wrapper">
-                        <div class="platform-selector">
-                            <select id="platformSelect">
-                                <option value="auto">Pilih Platform (Auto Detect)</option>
-                                <option value="facebook">Facebook</option>
-                                <option value="instagram">Instagram</option>
-                                <option value="twitter">Twitter</option>
-                                <option value="youtube">YouTube</option>
-                                <option value="tiktok">TikTok (Snaptik)</option>
-                                <option value="spotify">Spotify</option>
-                                <option value="pinterest">Pinterest</option>
-                                <option value="applemusic">Apple Music</option>
-                                <option value="mediafire">MediaFire</option>
-                                <option value="gdrive">Google Drive</option>
-                                <option value="ncs">NCS Music</option>
-                                <option value="telegram">Telegram Sticker</option>
-                            </select>
-                        </div>
-                        <div class="url-input">
-                            <input type="text" id="urlInput" placeholder="Masukkan URL atau kode di sini...">
-                        </div>
-                        <button class="download-btn" id="downloadBtn">
-                            <i class="fas fa-bolt"></i>
-                            <span>Download</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="status-section" id="statusSection">
-                    <div class="status-header">
-                        <div class="status-text">
-                            <div class="status-indicator" id="statusIndicator"></div>
-                            <span id="statusText">Mengecek URL...</span>
-                        </div>
-                        <span id="statusPercent">0%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                </div>
-
-                <div class="preview-section" id="previewSection">
-                    <div class="card-title">
-                        <i class="fas fa-play-circle"></i>
-                        <span>Preview Video</span>
-                    </div>
-                    <div class="preview-container">
-                        <video class="video-preview" id="videoPreview" controls>
-                            Your browser does not support the video tag.
-                        </video>
-                        <div class="preview-info" id="previewInfo">
-                            </div>
-                    </div>
-                </div>
-
-                <div class="results-section" id="resultsSection">
-                    <div class="card-title">
-                        <i class="fas fa-file-download"></i>
-                        <span>Hasil Download</span>
-                    </div>
-                    <div class="results-grid" id="resultsGrid">
-                        </div>
+                <div class="flex gap-3 mt-4 w-full">
+                    <a id="downloadLink" href="#" target="_blank" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-bold text-center transition shadow-lg">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <div class="platforms-section">
-                <div class="section-title">
-                    <i class="fas fa-th-large"></i>
-                    <span>Platform yang Didukung</span>
+    </main>
+
+    <div id="pwaPopup" class="pwa-popup fixed bottom-4 right-4 left-4 md:left-auto md:w-80 glass p-4 rounded-xl shadow-2xl z-50 border border-indigo-500/30 flex items-center gap-4">
+        <div class="bg-indigo-600 p-2 rounded-lg">
+            <i class="fa-solid fa-mobile-screen text-white"></i>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-bold text-sm">Install Aplikasi</h4>
+            <p class="text-xs text-gray-400">Akses lebih cepat tanpa browser.</p>
+        </div>
+        <button id="installBtn" class="bg-white text-indigo-900 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-200">
+            Install
+        </button>
+        <button onclick="document.getElementById('pwaPopup').classList.remove('show')" class="text-gray-400 hover:text-white">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div id="aboutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="glass max-w-sm w-full p-6 rounded-2xl relative border border-gray-700">
+            <button onclick="document.getElementById('aboutModal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="text-center">
+                <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-code text-3xl text-white"></i>
                 </div>
-                <div class="platforms-grid" id="platformsGrid">
-                    </div>
-            </div>
-        </main>
-
-        <main class="main-content" id="aboutPage">
-            <div class="about-section">
-                <div class="about-card">
-                    <div class="creator-profile">
-                        <div class="creator-avatar">IB</div>
-                        <h2 class="creator-name">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</h2>
-                        <p class="creator-tagline">Developer & Content Creator</p>
-                    </div>
-
-                    <div class="about-content">
-                        <h3 class="card-title">
-                            <i class="fas fa-user-circle"></i>
-                            <span>Tentang Saya</span>
-                        </h3>
-                        <div class="about-text">
-                            <p>Halo! Saya <strong>【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</strong>. Aplikasi Multi Downloader ini dibuat untuk memudahkan Anda mengunduh konten favorit dari berbagai media sosial secara gratis dan cepat.</p>
-                        </div>
-                        
-                        <div class="contact-info">
-                            <div class="contact-item">
-                                <i class="fas fa-code"></i>
-                                <div>
-                                    <div class="info-label">Versi Aplikasi</div>
-                                    <div class="info-value">v2.0 (PWA Supported)</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <h3 class="text-2xl font-bold mb-1">Multi Downloader</h3>
+                <p class="text-indigo-400 text-sm mb-4">Version 1.0.0</p>
+                <div class="bg-slate-900/50 p-4 rounded-xl text-sm text-gray-300">
+                    <p class="mb-2">Dibuat dengan <span class="text-red-500">❤</span> oleh:</p>
+                    <p class="text-xl font-bold text-white tracking-widest" style="font-family: monospace;">
+                        【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】
+                    </p>
                 </div>
+                <p class="mt-4 text-xs text-gray-500">© 2024 Itsbad Project. All rights reserved.</p>
             </div>
-        </main>
-
-        <footer>
-            <div class="footer-brand">Multi Downloader</div>
-            <p>Dibuat dengan ❤️ untuk kemudahan Anda</p>
-            <p>Hanya untuk penggunaan pribadi.</p>
-        </footer>
+        </div>
     </div>
 
     <script src="script.js"></script>
