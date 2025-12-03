@@ -2,32 +2,34 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Downloader /// Premium Tool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NeonDownloader // Pro</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ================= CYBERPUNK THEME ENGINE ================= */
         :root {
-            --bg-dark: #050505;
-            --glass: rgba(255, 255, 255, 0.03);
+            --bg: #030305;
+            --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(255, 255, 255, 0.1);
-            --primary: #00f3ff; /* Cyan Neon */
-            --secondary: #bd00ff; /* Purple Neon */
+            --primary: #0affff; /* Cyan Neon */
+            --secondary: #ff0055; /* Pink Neon */
             --text: #ffffff;
-            --text-muted: #8892b0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background-color: var(--bg-dark);
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(189, 0, 255, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at 0% 0%, rgba(10, 255, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 0, 85, 0.15), transparent 40%);
             color: var(--text);
             min-height: 100vh;
             display: flex;
@@ -35,437 +37,394 @@
             overflow-x: hidden;
         }
 
-        /* Scanline Effect */
-        body::after {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
-            pointer-events: none; z-index: 9999;
-        }
-
-        .container {
-            max-width: 800px;
+        .app-container {
+            max-width: 600px;
             margin: 0 auto;
             padding: 20px;
             width: 100%;
-            position: relative;
-            z-index: 10;
+            padding-bottom: 100px;
         }
 
-        /* --- HEADER --- */
+        /* Header */
         header {
-            text-align: center;
-            padding: 60px 0 40px;
-            animation: fadeInDown 1s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
         }
 
-        h1 {
-            font-size: 3rem;
+        .brand {
+            font-size: 1.5rem;
             font-weight: 700;
-            letter-spacing: -2px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, var(--primary), #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
-            margin-bottom: 10px;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .install-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: none; /* Muncul via JS jika bisa install */
         }
 
-        /* --- INPUT SECTION --- */
-        .input-box {
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
             background: var(--glass);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 10px;
-            display: flex;
-            gap: 10px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border-radius: 16px;
+            padding: 5px;
+            backdrop-filter: blur(10px);
             transition: 0.3s;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .input-box:focus-within {
+        .search-wrapper:focus-within {
             border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px rgba(10, 255, 255, 0.2);
         }
-
-        /* Animated Border Line */
-        .input-box::before {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            animation: scan 2s linear infinite;
-        }
-
-        @keyframes scan { 0% { left: -100%; } 100% { left: 100%; } }
 
         input {
-            flex: 1;
+            width: 100%;
             background: transparent;
             border: none;
             color: white;
             padding: 15px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-family: inherit;
             outline: none;
         }
 
-        button.btn-main {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
+        .action-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            bottom: 5px;
+            background: var(--primary);
             color: black;
-            font-weight: 700;
-            padding: 0 30px;
+            border: none;
             border-radius: 12px;
+            padding: 0 20px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            font-family: inherit;
-            text-transform: uppercase;
-            font-size: 0.9rem;
         }
+        
+        .action-btn:active { transform: scale(0.95); }
 
-        button.btn-main:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(189, 0, 255, 0.5);
-        }
-
-        /* --- PLATFORM ICONS --- */
-        .platforms {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        /* Media Player Card */
+        .media-card {
             margin-top: 30px;
-            opacity: 0.7;
-        }
-        .platforms i { font-size: 1.5rem; transition: 0.3s; }
-        .platforms i:hover { color: var(--primary); transform: translateY(-5px); text-shadow: 0 0 10px var(--primary); }
-
-        /* --- RESULT CARD (GLASS) --- */
-        #resultArea {
-            margin-top: 50px;
-            display: none; /* Hidden by default */
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card {
             background: rgba(20, 20, 25, 0.8);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 30px;
-            backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            position: relative;
-        }
-
-        @media(min-width: 768px) {
-            .card { flex-direction: row; align-items: flex-start; }
-        }
-
-        .thumb-container {
-            flex: 1;
-            min-width: 250px;
-            border-radius: 16px;
             overflow: hidden;
+            display: none; /* Hidden by default */
+            animation: slideUp 0.5s ease;
+        }
+
+        .video-wrapper {
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            background: black;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .thumb-container img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: 0.5s;
+        video {
+            width: 100%;
+            max-height: 500px;
+            display: block;
         }
 
-        .info-container {
-            flex: 2;
+        .card-body {
+            padding: 20px;
         }
 
-        .badge {
-            background: rgba(0, 243, 255, 0.1);
-            color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border: 1px solid rgba(0, 243, 255, 0.3);
+        .meta-tags {
+            display: flex;
+            gap: 10px;
             margin-bottom: 10px;
-            display: inline-block;
         }
 
-        .video-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 15px;
+        .tag {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.1);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .video-info h3 {
+            font-size: 1.1rem;
             line-height: 1.4;
+            margin-bottom: 20px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .download-btn {
+        /* Buttons */
+        .btn-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .dl-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.3s;
-            margin-bottom: 10px;
-            border: none;
             font-family: inherit;
+            transition: 0.2s;
+            text-decoration: none;
         }
 
         .btn-primary {
-            background: var(--text);
+            background: linear-gradient(135deg, var(--primary), #00bcd4);
             color: black;
-        }
-        .btn-primary:hover {
-            background: var(--primary);
-            box-shadow: 0 0 20px var(--primary);
+            box-shadow: 0 4px 15px rgba(10, 255, 255, 0.3);
         }
 
         .btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-        .btn-secondary:hover {
-            border-color: var(--text);
             background: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid var(--border);
         }
 
-        /* --- STATUS LOG --- */
-        .terminal {
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
-            color: var(--primary);
-            margin-top: 20px;
-            min-height: 20px;
-            text-align: center;
+        .btn-music {
+            background: linear-gradient(135deg, #1db954, #1ed760);
+            color: black;
         }
 
-        /* Loading Spinner */
-        .loader {
-            border: 3px solid rgba(255,255,255,0.1);
-            border-radius: 50%;
-            border-top: 3px solid var(--primary);
-            width: 24px; height: 24px;
-            animation: spin 1s linear infinite;
+        /* Loading */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 999;
             display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .hidden { display: none !important; }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s infinite linear;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app-container">
         <header>
-            <div class="subtitle">MULTI-PROTOCOL // V3.0</div>
-            <h1>NEXUS DOWNLOADER</h1>
-            <p style="color:var(--text-muted)">TikTok • Instagram • YouTube • Spotify</p>
+            <div class="brand"><i class="fas fa-bolt"></i> NEON DL</div>
+            <button id="pwaInstallBtn" class="install-btn"><i class="fas fa-download"></i> Install App</button>
         </header>
 
-        <div class="input-box">
-            <input type="text" id="urlInput" placeholder="Tempel URL (https://...) di sini..." autocomplete="off">
-            <div class="loader" id="loader"></div>
-            <button class="btn-main" onclick="processURL()">
-                <i class="fas fa-bolt"></i> PROCESS
-            </button>
+        <div class="search-wrapper">
+            <input type="text" id="urlInput" placeholder="Tempel link TikTok/IG/YT...">
+            <button class="action-btn" onclick="process()">GO</button>
         </div>
 
-        <div class="platforms">
-            <i class="fab fa-tiktok"></i>
-            <i class="fab fa-youtube"></i>
-            <i class="fab fa-instagram"></i>
-            <i class="fab fa-spotify"></i>
+        <div style="margin-top: 15px; font-size: 0.8rem; color: #666; text-align: center;">
+            <i class="fab fa-tiktok"></i> <i class="fab fa-instagram"></i> <i class="fab fa-youtube"></i> <i class="fab fa-spotify"></i>
         </div>
 
-        <div class="terminal" id="statusLog">System Ready... Waiting for input.</div>
+        <div id="resultCard" class="media-card">
+            <div class="video-wrapper">
+                <video id="videoPlayer" controls playsinline loop>
+                    <source src="" type="video/mp4">
+                    Browser kamu tidak support video player.
+                </video>
+            </div>
 
-        <div id="resultArea">
-            <div class="card">
-                <div class="thumb-container">
-                    <img id="thumb" src="" alt="Thumbnail">
+            <div class="card-body">
+                <div class="meta-tags">
+                    <span class="tag" id="platformTag">TIKTOK</span>
+                    <span class="tag">HD</span>
+                    <span class="tag">NO WM</span>
                 </div>
-                <div class="info-container">
-                    <span class="badge" id="platformBadge">TIKTOK</span>
-                    <h3 class="video-title" id="videoTitle">Video Title Goes Here</h3>
-                    
-                    <div id="buttonGroup">
-                        </div>
+
+                <div class="video-info">
+                    <h3 id="videoTitle">Loading title...</h3>
                 </div>
+
+                <div class="btn-grid" id="btnGroup">
+                    </div>
             </div>
         </div>
     </div>
 
+    <div id="loader" class="loader-overlay">
+        <div class="spinner"></div>
+        <div style="font-weight: 500;">Memproses Media...</div>
+    </div>
+
     <script>
-        // ================= SYSTEM CORE =================
+        // ================= LOGIC PLAYER & DOWNLOAD =================
+        
         const UI = {
             input: document.getElementById('urlInput'),
-            loader: document.getElementById('loader'),
-            status: document.getElementById('statusLog'),
-            resultArea: document.getElementById('resultArea'),
-            thumb: document.getElementById('thumb'),
+            card: document.getElementById('resultCard'),
+            video: document.getElementById('videoPlayer'),
             title: document.getElementById('videoTitle'),
-            badge: document.getElementById('platformBadge'),
-            btns: document.getElementById('buttonGroup')
+            platformTag: document.getElementById('platformTag'),
+            btnGroup: document.getElementById('btnGroup'),
+            loader: document.getElementById('loader')
         };
 
-        function log(msg, type = 'normal') {
-            UI.status.textContent = `> ${msg}`;
-            UI.status.style.color = type === 'error' ? '#ff0055' : 'var(--primary)';
-        }
+        const API_PROXY = 'https://api.allorigins.win/raw?url=';
 
-        function toggleLoad(isLoading) {
-            UI.loader.style.display = isLoading ? 'block' : 'none';
-            document.querySelector('.btn-main').style.opacity = isLoading ? '0.5' : '1';
-        }
-
-        // ================= INTELLIGENT HANDLERS =================
-        
-        // 1. TikTok Handler (Menggunakan oEmbed untuk meta, lalu link generator)
-        async function handleTikTok(url) {
-            // Karena API sering mati, kita gunakan strategi "Direct Open" yang lebih aman untuk client-side
-            return {
-                title: "TikTok Video Found",
-                thumb: "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg",
-                buttons: [
-                    { text: "DOWNLOAD NO WM (Server 1)", url: `https://tikcdn.io/ssstik/${url}`, color: "primary", action: "open" },
-                    { text: "DOWNLOAD (Server 2)", url: `https://tikdownload.org?url=${url}`, color: "secondary", action: "open" }
-                ]
-            };
-        }
-
-        // 2. YouTube Handler
-        function handleYouTube(url) {
-            // Ekstrak ID video
-            const id = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/)?.[1];
-            if(!id) throw new Error("ID YouTube tidak valid");
-
-            return {
-                title: "YouTube Video Detected",
-                thumb: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
-                buttons: [
-                    // Menggunakan Y2Mate / SSYouTube Deep Link (Paling stabil tanpa backend)
-                    { text: "DOWNLOAD VIDEO (MP4)", url: `https://ssyoutube.com/watch?v=${id}`, color: "primary", action: "open" },
-                    { text: "DOWNLOAD AUDIO (MP3)", url: `https://y2mate.com/youtube/${id}`, color: "secondary", action: "open" }
-                ]
-            };
-        }
-
-        // 3. Instagram Handler
-        function handleInstagram(url) {
-            return {
-                title: "Instagram Content",
-                thumb: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png",
-                buttons: [
-                    // Direct ke SnapInsta (Metode paling handal untuk IG client-side)
-                    { text: "DOWNLOAD VIA SERVER", url: `https://snapinsta.app/`, color: "primary", action: "open_guide" }
-                ]
-            };
-        }
-
-        // 4. Spotify Handler
-        function handleSpotify(url) {
-             return {
-                title: "Spotify Track",
-                thumb: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg",
-                buttons: [
-                    { text: "DOWNLOAD MP3", url: `https://spotifydown.com/`, color: "primary", action: "open_guide" }
-                ]
-            };
-        }
-
-        // ================= MAIN PROCESS =================
-        async function processURL() {
+        async function process() {
             const url = UI.input.value.trim();
-            if (!url) return log("Error: Input URL cannot be empty.", "error");
+            if (!url) return alert("Masukkan link dulu bro!");
 
-            toggleLoad(true);
-            log("Identifying Protocol...");
-            UI.resultArea.style.display = 'none';
+            UI.loader.style.display = 'flex';
+            UI.card.style.display = 'none';
+            UI.video.pause();
 
             try {
-                let data = null;
-                let platform = "";
-
-                // Routing Logic
+                // 1. TIKTOK (Best support for direct play)
                 if (url.includes('tiktok.com')) {
-                    platform = "TIKTOK";
-                    data = await handleTikTok(url);
-                } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                    platform = "YOUTUBE";
-                    data = handleYouTube(url);
-                } else if (url.includes('instagram.com')) {
-                    platform = "INSTAGRAM";
-                    data = handleInstagram(url);
-                } else if (url.includes('spotify.com')) {
-                    platform = "SPOTIFY";
-                    data = handleSpotify(url);
-                } else {
-                    throw new Error("Platform not supported yet.");
+                    await handleTikTok(url);
+                } 
+                // 2. LAINNYA (Generic)
+                else {
+                    alert("Untuk saat ini player internal hanya optimal untuk TikTok. Platform lain akan dialihkan ke mode download langsung.");
+                    // Fallback logic bisa ditambahkan di sini
+                    throw new Error("Platform lain sedang maintenance, coba TikTok dulu.");
                 }
-
-                // Render Result
-                UI.badge.textContent = platform;
-                UI.title.textContent = data.title;
-                UI.thumb.src = data.thumb;
-                
-                UI.btns.innerHTML = '';
-                data.buttons.forEach(btn => {
-                    const button = document.createElement('button');
-                    button.className = `download-btn btn-${btn.color}`;
-                    
-                    if (btn.action === 'open_guide') {
-                        // Khusus IG/Spotify yang butuh paste manual
-                        button.innerHTML = `<i class="fas fa-external-link-alt"></i> ${btn.text}`;
-                        button.onclick = () => {
-                            navigator.clipboard.writeText(url); // Auto copy link
-                            alert("Link telah disalin! Silakan paste di website tujuan yang akan terbuka.");
-                            window.open(btn.url, '_blank');
-                        };
-                    } else {
-                        // Direct Open
-                        button.innerHTML = `<i class="fas fa-download"></i> ${btn.text}`;
-                        button.onclick = () => window.open(btn.url, '_blank');
-                    }
-                    UI.btns.appendChild(button);
-                });
-
-                UI.resultArea.style.display = 'block';
-                log("Success: Data retrived.", "success");
-
-            } catch (err) {
-                log(err.message, "error");
-            } finally {
-                toggleLoad(false);
+            } catch (error) {
+                alert("Gagal: " + error.message);
+                UI.loader.style.display = 'none';
             }
         }
 
-        // Enter Key Support
-        UI.input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') processURL();
+        async function handleTikTok(url) {
+            UI.platformTag.textContent = "TIKTOK";
+            UI.platformTag.style.borderColor = "#0affff";
+            
+            // Menggunakan TikWM API via Proxy jika perlu, atau direct
+            const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
+            
+            // Kita coba fetch
+            const res = await fetch(API_PROXY + encodeURIComponent(apiUrl));
+            const data = await res.json();
+
+            if (data.code === 0) {
+                const videoUrl = data.data.play; // URL Video Tanpa WM
+                const musicUrl = data.data.music;
+                const title = data.data.title;
+                const cover = data.data.cover;
+
+                // Setup Player
+                UI.video.src = videoUrl;
+                UI.video.poster = cover;
+                UI.title.textContent = title || "TikTok Video";
+                
+                // Setup Buttons
+                UI.btnGroup.innerHTML = `
+                    <a href="${videoUrl}" target="_blank" download="tiktok_video.mp4" class="dl-btn btn-primary" onclick="forceDownload(event, '${videoUrl}', 'video.mp4')">
+                        <i class="fas fa-download"></i> Download Video
+                    </a>
+                    <a href="${musicUrl}" target="_blank" download="audio.mp3" class="dl-btn btn-music" onclick="forceDownload(event, '${musicUrl}', 'audio.mp3')">
+                        <i class="fas fa-music"></i> Download Musik
+                    </a>
+                `;
+
+                UI.loader.style.display = 'none';
+                UI.card.style.display = 'block';
+                UI.video.play().catch(() => {}); // Auto play jika bisa
+            } else {
+                throw new Error("Video tidak ditemukan atau private.");
+            }
+        }
+
+        // Fungsi Memaksa Download (Blob Strategy) agar tidak play di tab baru
+        async function forceDownload(e, url, filename) {
+            e.preventDefault();
+            const originalText = e.target.innerHTML;
+            e.target.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengunduh...`;
+            
+            try {
+                // Fetch sebagai blob
+                const response = await fetch(API_PROXY + encodeURIComponent(url));
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                // Buat link palsu
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Cleanup
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+                e.target.innerHTML = `<i class="fas fa-check"></i> Selesai!`;
+            } catch (err) {
+                // Fallback jika fetch blob gagal (CORS issues), buka tab baru
+                window.open(url, '_blank');
+                e.target.innerHTML = originalText;
+            }
+        }
+
+        // ================= PWA LOGIC =================
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const btn = document.getElementById('pwaInstallBtn');
+            btn.style.display = 'block';
+            
+            btn.addEventListener('click', () => {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        btn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            });
         });
 
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Fail', err));
+            });
+        }
     </script>
 </body>
 </html>
