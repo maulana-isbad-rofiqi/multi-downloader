@@ -1,74 +1,47 @@
 // Service Worker for Multi Downloader
-const CACHE_NAME = 'multi-downloader-v4';
+const CACHE_NAME = 'multi-downloader-v5';
 const urlsToCache = [
   '/',
   '/index.html'
 ];
 
-// Install event
+// Install
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache opened');
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(urlsToCache))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activate event
+// Activate
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then(keys => 
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch event
+// Fetch
 self.addEventListener('fetch', event => {
-  // Skip API requests and external resources
+  // Skip external APIs
   if (event.request.url.includes('api.') || 
       event.request.url.includes('tikwm') ||
-      event.request.url.includes('corsproxy') ||
-      event.request.url.includes('yt5s') ||
+      event.request.url.includes('tiktok') ||
+      event.request.url.includes('youtube') ||
       event.request.url.includes('instagram') ||
-      event.request.url.includes('spotify') ||
-      event.request.url.startsWith('blob:') ||
-      event.request.url.includes('unsplash')) {
+      event.request.url.includes('corsproxy') ||
+      event.request.url.startsWith('blob:')) {
     return;
   }
   
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        
-        return fetch(event.request).then(response => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        });
-      })
+      .then(response => response || fetch(event.request))
       .catch(() => {
         if (event.request.headers.get('accept').includes('text/html')) {
           return caches.match('/');
@@ -77,14 +50,7 @@ self.addEventListener('fetch', event => {
   );
 });
 
-// Background sync for offline functionality
-self.addEventListener('sync', event => {
-  if (event.tag === 'download-queue') {
-    console.log('Processing download queue...');
-  }
-});
-
-// Push notification
+// Push notifications
 self.addEventListener('push', event => {
   const options = {
     body: 'Multi Downloader siap digunakan!',
