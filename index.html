@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi Downloader</title>
+    <title>Multi Downloader - Unduh Video & Musik</title>
+    
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/724/724933.png" type="image/png">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
     <style>
@@ -67,7 +70,7 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .logo h1 {
@@ -83,8 +86,16 @@
         }
 
         .logo-icon {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--primary);
+            /* Animasi halus untuk logo */
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
         }
 
         nav ul {
@@ -696,6 +707,8 @@
     <div class="container">
         <header>
             <div class="header-container">
+                <div class="logo">
+                    <i class="fas fa-bolt logo-icon"></i>
                     <h1>Multi Downloader</h1>
                 </div>
                 
@@ -710,7 +723,6 @@
             </div>
         </header>
 
-        <!-- Home Page -->
         <main class="main-content active" id="homePage">
             <div class="main-card">
                 <div class="card-title">
@@ -760,7 +772,6 @@
                     </div>
                 </div>
 
-                <!-- Preview Section -->
                 <div class="preview-section" id="previewSection">
                     <div class="card-title">
                         <i class="fas fa-play-circle"></i>
@@ -771,20 +782,17 @@
                             Your browser does not support the video tag.
                         </video>
                         <div class="preview-info" id="previewInfo">
-                            <!-- Preview info akan diisi oleh JavaScript -->
-                        </div>
+                            </div>
                     </div>
                 </div>
 
-                <!-- Results Section -->
                 <div class="results-section" id="resultsSection">
                     <div class="card-title">
                         <i class="fas fa-file-download"></i>
                         <span>Hasil Download</span>
                     </div>
                     <div class="results-grid" id="resultsGrid">
-                        <!-- Hasil download akan ditampilkan di sini -->
-                    </div>
+                        </div>
                 </div>
             </div>
 
@@ -794,17 +802,15 @@
                     <span>Platform yang Didukung</span>
                 </div>
                 <div class="platforms-grid" id="platformsGrid">
-                    <!-- Platform cards akan di-generate oleh JavaScript -->
-                </div>
+                    </div>
             </div>
         </main>
 
-        <!-- About Page -->
         <main class="main-content" id="aboutPage">
             <div class="about-section">
                 <div class="about-card">
                     <div class="creator-profile">
-                        <div class="creator-avatar">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</div>
+                        <div class="creator-avatar">IB</div>
                         <h2 class="creator-name">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</h2>
                         <p class="creator-tagline">Developer & Content Creator</p>
                     </div>
@@ -857,22 +863,6 @@
                                 <div class="info-value">Jika ada pertanyaan atau masalah, silakan hubungi saya</div>
                             </div>
                         </div>
-                        
-                        <div class="contact-item">
-                            <i class="fas fa-bug"></i>
-                            <div>
-                                <div class="info-label">Laporkan Bug</div>
-                                <div class="info-value">Jika menemukan bug, tolong laporkan untuk perbaikan</div>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <i class="fas fa-lightbulb"></i>
-                            <div>
-                                <div class="info-label">Saran Fitur</div>
-                                <div class="info-value">Saran untuk fitur baru sangat saya hargai</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -880,7 +870,7 @@
 
         <footer>
             <div class="footer-brand">Multi Downloader</div>
-            <p>Dibuat dengan ❤️ oleh 【﻿𝕀𝕥𝕤𝕓𝕒𝕕】 | copyright</p>
+            <p>Dibuat dengan ❤️ untuk kemudahan Anda</p>
             <p>Hanya untuk penggunaan pribadi. Harap menghormati hak cipta.</p>
         </footer>
     </div>
