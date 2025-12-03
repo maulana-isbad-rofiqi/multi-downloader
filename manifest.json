@@ -1,20 +1,29 @@
 {
   "name": "Multi Downloader",
   "short_name": "MDownloader",
-  "description": "Download video & musik dari TikTok, YouTube, Instagram, Spotify",
+  "description": "Download video & musik dari TikTok, YouTube, Instagram, Spotify, dan lainnya",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
+  "background_color": "#0a192f",
   "theme_color": "#0f172a",
   "orientation": "portrait",
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233b82f6%22>⬇️</text></svg>",
       "sizes": "any",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
   "categories": ["utilities", "productivity"],
   "lang": "id",
-  "dir": "ltr"
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Download Video",
+      "short_name": "Download",
+      "description": "Download video dari berbagai platform",
+      "url": "/"
+    }
+  ]
 }
