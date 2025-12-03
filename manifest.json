@@ -1,7 +1,7 @@
 {
   "name": "Multi Downloader",
   "short_name": "MDownloader",
-  "description": "Download video & musik dari TikTok, YouTube, Instagram, Spotify, dan lainnya",
+  "description": "Download video & musik dari TikTok, YouTube, Instagram, Spotify",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
