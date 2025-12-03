@@ -1,5 +1,5 @@
 // Service Worker for Multi Downloader
-const CACHE_NAME = 'multi-downloader-v2';
+const CACHE_NAME = 'multi-downloader-v3';
 const urlsToCache = [
   '/',
   '/index.html'
@@ -36,7 +36,11 @@ self.addEventListener('activate', event => {
 // Fetch event
 self.addEventListener('fetch', event => {
   // Skip API requests and blob URLs
-  if (event.request.url.includes('api.ootaizumi.web.id') || 
+  if (event.request.url.includes('api.') || 
+      event.request.url.includes('tikwm') ||
+      event.request.url.includes('douyin.wtf') ||
+      event.request.url.includes('yt5s') ||
+      event.request.url.includes('spotifydown') ||
       event.request.url.startsWith('blob:')) {
     return;
   }
@@ -70,40 +74,17 @@ self.addEventListener('fetch', event => {
         if (event.request.headers.get('accept').includes('text/html')) {
           return caches.match('/');
         }
-        // Return offline page for other requests
-        return new Response('Anda sedang offline. Cek koneksi internet Anda.', {
-          status: 503,
-          statusText: 'Offline',
-          headers: new Headers({'Content-Type': 'text/plain'})
-        });
       })
   );
 });
 
-// Background sync (optional)
-self.addEventListener('sync', event => {
-  if (event.tag === 'sync-downloads') {
-    console.log('Background sync triggered');
-  }
-});
-
-// Push notification (optional)
+// Push notification
 self.addEventListener('push', event => {
   const options = {
-    body: event.data ? event.data.text() : 'Multi Downloader siap digunakan!',
+    body: 'Multi Downloader siap digunakan!',
     icon: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233b82f6%22>⬇️</text></svg>',
     badge: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%233b82f6%22/><text x=%2250%22 y=%2260%22 font-family=%22Arial%22 font-size=%2240%22 fill=%22white%22 text-anchor=%22middle%22>M</text></svg>',
-    vibrate: [200, 100, 200],
-    data: {
-      dateOfArrival: Date.now(),
-      primaryKey: '1'
-    },
-    actions: [
-      {
-        action: 'open',
-        title: 'Buka Aplikasi'
-      }
-    ]
+    vibrate: [200, 100, 200]
   };
   
   event.waitUntil(
@@ -114,14 +95,7 @@ self.addEventListener('push', event => {
 // Notification click event
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  
-  if (event.action === 'open') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
-  } else {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
-  }
+  event.waitUntil(
+    clients.openWindow('/')
+  );
 });
