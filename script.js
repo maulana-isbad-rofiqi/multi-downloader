@@ -1,201 +1,200 @@
-// --- KONFIGURASI PLATFORM ---
-const platforms = [
-    { id: 'facebook', name: 'Facebook', icon: 'fab fa-facebook' },
-    { id: 'instagram', name: 'Instagram', icon: 'fab fa-instagram' },
-    { id: 'twitter', name: 'Twitter', icon: 'fab fa-twitter' },
-    { id: 'youtube', name: 'YouTube', icon: 'fab fa-youtube' },
-    { id: 'tiktok', name: 'TikTok', icon: 'fab fa-tiktok' },
-    { id: 'spotify', name: 'Spotify', icon: 'fab fa-spotify' },
-    { id: 'applemusic', name: 'Apple Music', icon: 'fab fa-apple' },
-    { id: 'mediafire', name: 'MediaFire', icon: 'fas fa-cloud-download-alt' },
-    { id: 'gdrive', name: 'Google Drive', icon: 'fab fa-google-drive' },
-    { id: 'ncs', name: 'NCS Music', icon: 'fas fa-music' }
+/**
+ * KONFIGURASI API
+ * API dipisahkan di sini agar mudah diedit.
+ */
+const API_BASE = "https://api.ootaizumi.web.id/downloader/";
+
+const services = [
+    { id: 'tiktok', name: 'TikTok', icon: 'fa-brands fa-tiktok', endpoint: 'snaptik?url=', color: 'group-hover:text-pink-500' },
+    { id: 'instagram', name: 'Instagram', icon: 'fa-brands fa-instagram', endpoint: 'instagram?url=', color: 'group-hover:text-fuchsia-500' },
+    { id: 'youtube', name: 'YouTube Play', icon: 'fa-brands fa-youtube', endpoint: 'youtube-play?query=', type: 'query', color: 'group-hover:text-red-500' },
+    { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook', endpoint: 'facebook?url=', color: 'group-hover:text-blue-500' },
+    { id: 'spotify', name: 'Spotify', icon: 'fa-brands fa-spotify', endpoint: 'spotify-v2?url=', color: 'group-hover:text-green-500' },
+    { id: 'twitter', name: 'Twitter/X', icon: 'fa-brands fa-twitter', endpoint: 'twitter?url=', color: 'group-hover:text-sky-400' },
+    { id: 'pinterest', name: 'Pinterest', icon: 'fa-brands fa-pinterest', endpoint: 'pinterest?url=', color: 'group-hover:text-red-600' },
+    { id: 'mediafire', name: 'Mediafire', icon: 'fa-solid fa-fire', endpoint: 'mediafire?url=', color: 'group-hover:text-blue-400' },
+    { id: 'gdrive', name: 'GDrive', icon: 'fa-brands fa-google-drive', endpoint: 'gdrive?url=', color: 'group-hover:text-green-400' },
+    { id: 'applemusic', name: 'Apple Music', icon: 'fa-brands fa-apple', endpoint: 'applemusic?url=', color: 'group-hover:text-gray-300' },
+    { id: 'ncs', name: 'NCS Music', icon: 'fa-solid fa-music', endpoint: 'ncs?tid=', type: 'tid', color: 'group-hover:text-yellow-400' },
+    { id: 'telegram', name: 'Sticker TG', icon: 'fa-brands fa-telegram', endpoint: 'telegram-sticker?url=', color: 'group-hover:text-sky-500' },
 ];
 
-// --- SELEKSI DOM ---
-const platformSelect = document.getElementById('platformSelect');
-const urlInput = document.getElementById('urlInput');
-const downloadBtn = document.getElementById('downloadBtn');
-const statusSection = document.getElementById('statusSection');
-const statusIndicator = document.getElementById('statusIndicator');
-const statusText = document.getElementById('statusText');
-const statusPercent = document.getElementById('statusPercent');
-const progressFill = document.getElementById('progressFill');
-const previewSection = document.getElementById('previewSection');
-const videoPreview = document.getElementById('videoPreview');
-const previewInfo = document.getElementById('previewInfo');
-const resultsSection = document.getElementById('resultsSection');
-const resultsGrid = document.getElementById('resultsGrid');
-const platformsGrid = document.getElementById('platformsGrid');
-const homeLink = document.getElementById('homeLink');
-const aboutLink = document.getElementById('aboutLink');
-const homePage = document.getElementById('homePage');
-const aboutPage = document.getElementById('aboutPage');
+let currentService = null;
 
-// --- INISIALISASI ---
-document.addEventListener('DOMContentLoaded', () => {
-    initPlatformCards();
-    updatePlaceholder();
+// Render Service Grid
+const serviceGrid = document.getElementById('serviceGrid');
+services.forEach(service => {
+    const btn = document.createElement('button');
+    btn.className = `group bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500 p-4 rounded-xl transition flex flex-col items-center gap-2 cursor-pointer`;
+    btn.onclick = () => selectService(service, btn);
+    btn.innerHTML = `
+        <i class="${service.icon} text-2xl text-gray-400 ${service.color} transition"></i>
+        <span class="text-xs font-medium text-gray-300 group-hover:text-white">${service.name}</span>
+    `;
+    serviceGrid.appendChild(btn);
+});
+
+// Fungsi Memilih Layanan
+function selectService(service, element) {
+    currentService = service;
     
-    // Register PWA Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-            .then(() => console.log('Service Worker PWA Terdaftar!'))
-            .catch(err => console.log('Gagal daftar SW:', err));
+    // Reset visual selection
+    Array.from(serviceGrid.children).forEach(child => {
+        child.classList.remove('ring-2', 'ring-indigo-500', 'bg-slate-700');
+    });
+    element.classList.add('ring-2', 'ring-indigo-500', 'bg-slate-700');
+
+    // Update Input UI
+    const input = document.getElementById('urlInput');
+    const label = document.getElementById('inputLabel');
+    const btn = document.getElementById('downloadBtn');
+
+    input.disabled = false;
+    btn.disabled = false;
+    input.value = '';
+    
+    if (service.type === 'query') {
+        input.placeholder = "Masukkan Judul Lagu / Query...";
+        label.innerText = `Pencarian ${service.name}`;
+    } else if (service.type === 'tid') {
+        input.placeholder = "Masukkan Track ID...";
+        label.innerText = `Masukkan ID ${service.name}`;
+    } else {
+        input.placeholder = `Tempel tautan ${service.name} di sini...`;
+        label.innerText = `Tempel URL ${service.name}`;
+    }
+    
+    document.getElementById('resultArea').classList.add('hidden');
+}
+
+// Fungsi Fetch Data Utama
+async function fetchMedia() {
+    if (!currentService) return alert("Pilih layanan dulu!");
+    const inputVal = document.getElementById('urlInput').value.trim();
+    if (!inputVal) return alert("Input tidak boleh kosong!");
+
+    // UI Loading
+    const loading = document.getElementById('loading');
+    const resultArea = document.getElementById('resultArea');
+    const btn = document.getElementById('downloadBtn');
+    
+    loading.classList.remove('hidden');
+    resultArea.classList.add('hidden');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Loading...';
+
+    const fullUrl = `${API_BASE}${currentService.endpoint}${encodeURIComponent(inputVal)}`;
+
+    try {
+        const response = await fetch(fullUrl);
+        const data = await response.json();
+
+        if (data) {
+            displayResult(data);
+        } else {
+            alert("Gagal mengambil data. Pastikan URL/Query benar.");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Terjadi kesalahan pada server atau koneksi.");
+    } finally {
+        loading.classList.add('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Proses</span><i class="fa-solid fa-bolt"></i>';
+    }
+}
+
+// Fungsi Menampilkan Hasil (Preview)
+function displayResult(data) {
+    const resultArea = document.getElementById('resultArea');
+    const mediaPreview = document.getElementById('mediaPreview');
+    const mediaTitle = document.getElementById('mediaTitle');
+    const downloadLink = document.getElementById('downloadLink');
+
+    resultArea.classList.remove('hidden');
+    mediaPreview.innerHTML = ''; // Clear old preview
+
+    // Logika Deteksi Konten (Sesuaikan dengan return JSON API kamu)
+    // Karena saya tidak bisa melihat output live API, ini adalah logika umum:
+    
+    let title = data.title || data.caption || data.filename || "Media Found";
+    let thumbnail = data.thumbnail || data.cover || data.image || "https://via.placeholder.com/300x200?text=No+Preview";
+    let url = data.url || data.download_url || data.link || data.audio || data.video;
+
+    // Khusus Youtube Play dari Ootaizumi (biasanya return yt_url atau download_url)
+    if(currentService.id === 'youtube' && data.result) {
+        title = data.result.title;
+        thumbnail = data.result.thumbnail;
+        url = data.result.url_audio || data.result.url; // Prioritas Audio untuk "Play"
+    } 
+    // Handle struktur data yang dibungkus "result" atau "data"
+    else if (data.result) {
+        title = data.result.title || title;
+        url = data.result.url || url;
+        thumbnail = data.result.thumbnail || thumbnail;
+    }
+
+    // Set Judul
+    mediaTitle.innerText = title;
+    
+    // Set Tombol Download
+    downloadLink.href = url;
+
+    // Logic Preview
+    if (currentService.id === 'spotify' || currentService.id === 'applemusic' || currentService.id === 'ncs' || currentService.id === 'youtube') {
+        // Audio Preview
+        mediaPreview.innerHTML = `
+            <div class="text-center w-full">
+                <img src="${thumbnail}" class="w-32 h-32 rounded-full mx-auto animate-spin-slow mb-3 border-4 border-indigo-500 object-cover">
+                <audio controls class="w-full mt-2">
+                    <source src="${url}" type="audio/mpeg">
+                    Browser Anda tidak mendukung elemen audio.
+                </audio>
+            </div>
+        `;
+    } else {
+        // Video/Image Preview
+        const fileExt = url ? url.split('.').pop().toLowerCase() : '';
+        if (['mp4', 'webm', 'mov'].includes(fileExt)) {
+             mediaPreview.innerHTML = `
+                <video controls class="w-full rounded-lg max-h-60 bg-black">
+                    <source src="${url}" type="video/mp4">
+                </video>
+            `;
+        } else {
+            mediaPreview.innerHTML = `
+                <img src="${thumbnail}" class="w-full h-48 object-cover rounded-lg opacity-80 hover:opacity-100 transition">
+            `;
+        }
+    }
+}
+
+// PWA Logic (Popup)
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Tampilkan popup setelah 2 detik
+    setTimeout(() => {
+        document.getElementById('pwaPopup').classList.add('show');
+    }, 2000);
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response: ${outcome}`);
+        deferredPrompt = null;
+        document.getElementById('pwaPopup').classList.remove('show');
     }
 });
 
-// Generate Kartu Platform
-function initPlatformCards() {
-    platformsGrid.innerHTML = '';
-    platforms.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'platform-card';
-        card.innerHTML = `<div class="platform-icon"><i class="${p.icon}"></i></div><div class="platform-name">${p.name}</div>`;
-        card.onclick = () => {
-            platformSelect.value = p.id;
-            updatePlaceholder();
-            card.style.transform = 'scale(0.95)';
-            setTimeout(() => card.style.transform = '', 200);
-        };
-        platformsGrid.appendChild(card);
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registered'))
+            .catch(err => console.log('SW failed', err));
     });
 }
-
-function updatePlaceholder() {
-    urlInput.placeholder = platformSelect.value === 'ncs' ? 'Masukkan ID Lagu...' : 'Tempel tautan video di sini...';
-}
-
-function updateStatus(active, text, percent) {
-    if(active) {
-        statusSection.classList.add('active');
-        statusIndicator.classList.add('active');
-    } else {
-        statusSection.classList.remove('active');
-        statusIndicator.classList.remove('active');
-    }
-    statusText.innerText = text;
-    statusPercent.innerText = percent + '%';
-    progressFill.style.width = percent + '%';
-}
-
-// --- LOGIKA UTAMA (PROSES DOWNLOAD) ---
-async function processDownload() {
-    const url = urlInput.value.trim();
-    if(!url) { alert('Mohon masukkan URL!'); return; }
-
-    // Reset Tampilan
-    previewSection.classList.remove('active');
-    resultsSection.classList.remove('active');
-    videoPreview.pause();
-    videoPreview.src = "";
-
-    // Mulai Proses
-    updateStatus(true, 'Menganalisis URL...', 20);
-    await new Promise(r => setTimeout(r, 800)); // Simulasi delay
-    
-    updateStatus(true, 'Mengambil metadata...', 60);
-    await new Promise(r => setTimeout(r, 800));
-
-    // --- MOCK API RESPONSE (Ganti bagian ini dengan fetch API aslimu nanti) ---
-    // Agar preview akurat, kita simulasikan data lengkap dari server
-    const mockData = {
-        success: true,
-        platform: platformSelect.value === 'auto' ? 'YouTube/Video' : platformSelect.value,
-        title: "Video Contoh Hasil Download (Simulasi)",
-        duration: "03:45",
-        // URL Video Sample (Bisa diputar agar preview terlihat nyata)
-        previewUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        downloads: [
-            { quality: "1080p (HD)", format: "MP4", size: "125 MB", url: "#" },
-            { quality: "720p (SD)", format: "MP4", size: "68 MB", url: "#" },
-            { quality: "360p", format: "MP4", size: "24 MB", url: "#" },
-            { quality: "Audio Only", format: "MP3", size: "5 MB", url: "#" }
-        ]
-    };
-    // -------------------------------------------------------------------------
-
-    updateStatus(true, 'Menyiapkan hasil...', 90);
-    await new Promise(r => setTimeout(r, 500));
-    updateStatus(false, '', 0);
-
-    if(mockData.success) {
-        showPreview(mockData);
-        displayResults(mockData);
-        // Scroll ke bawah
-        setTimeout(() => {
-            previewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-    } else {
-        alert("Gagal mengambil data. Coba lagi.");
-    }
-}
-
-// Fungsi Menampilkan Preview (Akurat sesuai data)
-function showPreview(data) {
-    if(data.previewUrl) {
-        previewSection.classList.add('active');
-        videoPreview.src = data.previewUrl;
-        
-        previewInfo.innerHTML = `
-            <div class="info-item">
-                <div class="info-label">Judul</div>
-                <div class="info-value">${data.title}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Durasi</div>
-                <div class="info-value">${data.duration}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Platform</div>
-                <div class="info-value" style="text-transform: capitalize;">${data.platform}</div>
-            </div>
-        `;
-    }
-}
-
-// Fungsi Menampilkan Tombol Download
-function displayResults(data) {
-    resultsSection.classList.add('active');
-    resultsGrid.innerHTML = '';
-
-    data.downloads.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'result-card';
-        div.innerHTML = `
-            <div class="result-header">
-                <div class="result-title">${item.format}</div>
-                <div class="result-quality">${item.quality}</div>
-            </div>
-            <div class="result-info">
-                <div><i class="fas fa-weight-hanging"></i> Ukuran: ${item.size}</div>
-            </div>
-            <button class="result-download-btn" onclick="alert('Mulai download: ${item.quality}')">
-                <i class="fas fa-download"></i> Download
-            </button>
-        `;
-        resultsGrid.appendChild(div);
-    });
-}
-
-// --- NAVIGASI HALAMAN ---
-homeLink.onclick = (e) => { e.preventDefault(); switchPage('home'); };
-aboutLink.onclick = (e) => { e.preventDefault(); switchPage('about'); };
-
-function switchPage(page) {
-    if(page === 'home') {
-        homePage.classList.add('active');
-        aboutPage.classList.remove('active');
-        homeLink.classList.add('active');
-        aboutLink.classList.remove('active');
-    } else {
-        homePage.classList.remove('active');
-        aboutPage.classList.add('active');
-        homeLink.classList.remove('active');
-        aboutLink.classList.add('active');
-    }
-}
-
-// Event Listeners
-downloadBtn.onclick = processDownload;
-platformSelect.onchange = updatePlaceholder;
