@@ -1,0 +1,21 @@
+{
+    "name": "Itsbad Multi Downloader",
+    "short_name": "MultiDL",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#121826",
+    "theme_color": "#121826",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "assets/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "assets/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
