@@ -1,5 +1,5 @@
 // Service Worker for Multi Downloader
-const CACHE_NAME = 'multi-downloader-v3';
+const CACHE_NAME = 'multi-downloader-v4';
 const urlsToCache = [
   '/',
   '/index.html'
@@ -35,13 +35,15 @@ self.addEventListener('activate', event => {
 
 // Fetch event
 self.addEventListener('fetch', event => {
-  // Skip API requests and blob URLs
+  // Skip API requests and external resources
   if (event.request.url.includes('api.') || 
       event.request.url.includes('tikwm') ||
-      event.request.url.includes('douyin.wtf') ||
+      event.request.url.includes('corsproxy') ||
       event.request.url.includes('yt5s') ||
-      event.request.url.includes('spotifydown') ||
-      event.request.url.startsWith('blob:')) {
+      event.request.url.includes('instagram') ||
+      event.request.url.includes('spotify') ||
+      event.request.url.startsWith('blob:') ||
+      event.request.url.includes('unsplash')) {
     return;
   }
   
@@ -53,12 +55,10 @@ self.addEventListener('fetch', event => {
         }
         
         return fetch(event.request).then(response => {
-          // Check if valid response
           if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
           }
           
-          // Clone the response
           const responseToCache = response.clone();
           
           caches.open(CACHE_NAME)
@@ -70,12 +70,18 @@ self.addEventListener('fetch', event => {
         });
       })
       .catch(() => {
-        // If offline and HTML request, return cached HTML
         if (event.request.headers.get('accept').includes('text/html')) {
           return caches.match('/');
         }
       })
   );
+});
+
+// Background sync for offline functionality
+self.addEventListener('sync', event => {
+  if (event.tag === 'download-queue') {
+    console.log('Processing download queue...');
+  }
 });
 
 // Push notification
@@ -92,7 +98,7 @@ self.addEventListener('push', event => {
   );
 });
 
-// Notification click event
+// Notification click
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   event.waitUntil(
