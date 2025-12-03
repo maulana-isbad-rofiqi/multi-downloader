@@ -1,265 +1,205 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kaltain MultiLoader • Professional Tool</title>
-    <meta name="theme-color" content="#020617">
-    <meta name="description" content="Premium Media Downloader for TikTok, YouTube, Spotify & More.">
+    <title>Multi Downloader • Premium Tools</title>
+    <meta name="theme-color" content="#0f172a">
     
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/7269/7269995.png" type="image/png">
     <link rel="manifest" href="manifest.json">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
-                    colors: {
-                        brand: { 500: '#3b82f6', 600: '#2563eb', glow: '#60a5fa' },
-                        dark: { 900: '#020617', 800: '#0f172a', 700: '#1e293b' }
-                    },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                        'fade-up': 'fadeUp 0.5s ease-out forwards'
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
-                        },
-                        fadeUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Modern Enhancements */
-        body { background-color: #020617; color: white; -webkit-tap-highlight-color: transparent; }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        body { font-family: 'Outfit', sans-serif; background-color: #0f172a; color: white; -webkit-tap-highlight-color: transparent; }
+        
+        /* Glassmorphism Panel */
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
-        .input-glow:focus-within {
-            box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.5);
-            border-color: rgba(96, 165, 250, 0.5);
+
+        /* Neon Glow Effect */
+        .neon-text {
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
         }
-        /* Hide Scrollbar but keep functionality */
+        
+        /* Loading Animation */
+        .loader-dots div {
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        .loader-dots div:nth-child(1) { left: 8px; animation: loader-dots1 0.6s infinite; }
+        .loader-dots div:nth-child(2) { left: 8px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(3) { left: 32px; animation: loader-dots2 0.6s infinite; }
+        .loader-dots div:nth-child(4) { left: 56px; animation: loader-dots3 0.6s infinite; }
+        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
+        @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
+
+        /* Hide Scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        /* Skeleton Animation */
-        .skeleton {
-            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden selection:bg-blue-500 selection:text-white">
 
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
-    </div>
+    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
 
-    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-white/5">
-        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-cloud text-white text-sm"></i>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5">
+        <div class="max-w-3xl mx-auto px-5 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2.5">
+                <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-cloud-arrow-down text-white"></i>
                 </div>
-                <span class="font-bold text-lg tracking-tight">Kaltain<span class="text-blue-400">Loader</span></span>
+                <span class="font-bold text-lg tracking-wide">Multi<span class="text-blue-400">Downloader</span></span>
             </div>
-            <button onclick="toggleModal('aboutModal')" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition">
-                <i class="fa-solid fa-info text-xs text-slate-400"></i>
+            <button onclick="toggleModal('aboutModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition border border-slate-700">
+                <i class="fa-solid fa-bars text-slate-300"></i>
             </button>
         </div>
     </nav>
 
-    <main class="relative z-10 flex-grow container mx-auto px-4 mt-32 max-w-2xl pb-20">
+    <main class="relative z-10 container mx-auto px-4 mt-32 max-w-2xl pb-24">
         
-        <div class="text-center mb-10 animate-fade-up">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
-                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                <span class="text-[10px] font-semibold text-blue-400 uppercase tracking-wider">Online System v3.0</span>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
-                Download Tanpa Batas.
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold mb-3 text-white">
+                Download <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 neon-text">Apapun.</span>
             </h1>
-            <p class="text-slate-400 text-sm md:text-base max-w-md mx-auto">
-                Mendukung TikTok, YouTube, Spotify, Instagram, dan 10+ platform lainnya. Tempel link, kami proses otomatis.
-            </p>
+            <p class="text-slate-400 text-sm">TikTok, YouTube, Spotify, IG & Lainnya. Tanpa Watermark.</p>
         </div>
 
-        <div class="glass-panel p-2 rounded-2xl mb-8 transition-all duration-300 input-glow animate-fade-up" style="animation-delay: 100ms;">
-            <div class="relative flex items-center">
-                <div class="absolute left-4 text-slate-500" id="inputIconWrapper">
-                    <i class="fa-solid fa-link transition-all" id="inputIcon"></i>
-                </div>
-                <input type="text" id="urlInput" 
-                    class="w-full bg-transparent border-none text-white text-sm px-12 py-4 focus:ring-0 placeholder-slate-500"
-                    placeholder="Tempel tautan atau ketik judul lagu..."
-                    autocomplete="off"
-                    oninput="handleInput(this.value)">
-                
-                <button onclick="executeDownload()" id="mainBtn"
-                    class="absolute right-2 bg-blue-600 hover:bg-blue-500 text-white p-3 rounded-xl transition shadow-lg shadow-blue-600/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </button>
+        <div class="glass p-2 rounded-2xl mb-8 flex items-center shadow-2xl relative z-20 group focus-within:ring-2 focus-within:ring-blue-500/50 transition-all">
+            <div class="pl-4 pr-3 text-slate-500 group-focus-within:text-blue-400 transition">
+                <i id="inputIcon" class="fa-solid fa-link text-xl"></i>
             </div>
+            <input type="text" id="urlInput" 
+                class="w-full bg-transparent border-none text-white px-2 py-3 focus:outline-none placeholder-slate-500"
+                placeholder="Tempel link di sini..."
+                autocomplete="off"
+                oninput="detectLink(this.value)">
+            <button onclick="processData()" id="btnAction" class="bg-blue-600 hover:bg-blue-500 text-white p-3.5 rounded-xl transition shadow-lg shadow-blue-600/30 active:scale-95">
+                <i class="fa-solid fa-download"></i>
+            </button>
         </div>
 
-        <div id="detectBadge" class="hidden mx-auto w-max mb-8 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium flex items-center gap-2 animate-fade-up">
-            <i class="fa-solid fa-check-circle"></i>
-            <span id="detectText">Platform Terdeteksi</span>
+        <div id="statusInfo" class="hidden mb-6 flex justify-center">
+            <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-check-circle"></i> <span id="statusText">Platform Terdeteksi</span>
+            </span>
         </div>
 
-        <div id="platformGrid" class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-4 mb-12 animate-fade-up" style="animation-delay: 200ms;">
+        <div id="gridPlatform" class="grid grid-cols-4 sm:grid-cols-5 gap-3 mb-10">
             </div>
 
-        <div id="resultCard" class="hidden glass-panel rounded-3xl overflow-hidden shadow-2xl animate-fade-up border-t border-white/10">
-            <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-white/5">
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Hasil Proses</span>
-                <button onclick="closeResult()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-6">
-                <div class="flex flex-col md:flex-row gap-6 items-start">
-                    <div class="relative w-full md:w-40 shrink-0 rounded-xl overflow-hidden shadow-lg group">
-                        <img id="resThumb" src="" class="w-full aspect-video md:aspect-square object-cover bg-slate-800" alt="Thumb">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
-                            <i class="fa-solid fa-play text-white text-2xl"></i>
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <h3 id="resTitle" class="font-bold text-lg leading-snug mb-2 text-white line-clamp-2">Title Here</h3>
-                        <p id="resSource" class="text-xs text-blue-400 mb-4 font-mono">Source: Unknown</p>
-                        
-                        <div id="downloadList" class="space-y-2.5 max-h-60 overflow-y-auto no-scrollbar pr-1">
-                            </div>
-                    </div>
+        <div id="resultBox" class="hidden glass rounded-2xl overflow-hidden shadow-2xl animate-[fadeIn_0.5s_ease-out]">
+            <div class="relative group w-full h-48 sm:h-64 bg-slate-800 overflow-hidden">
+                <img id="resThumb" src="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500" alt="Thumbnail">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                <div class="absolute bottom-0 left-0 p-4 w-full">
+                    <span id="resPlatform" class="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded uppercase tracking-wider mb-2 inline-block">TIKTOK</span>
+                    <h3 id="resTitle" class="text-white font-bold text-lg line-clamp-2 leading-tight">Title Video</h3>
                 </div>
             </div>
+            
+            <div class="p-5 bg-slate-900/50 backdrop-blur-sm">
+                <div id="downloadList" class="space-y-3">
+                    </div>
+                <button onclick="closeResult()" class="mt-4 w-full py-3 text-slate-500 text-sm hover:text-white transition">Tutup / Reset</button>
+            </div>
         </div>
 
-        <div id="loader" class="hidden animate-fade-up">
-            <div class="glass-panel p-6 rounded-3xl">
-                <div class="flex gap-4">
-                    <div class="w-24 h-24 rounded-xl skeleton shrink-0"></div>
-                    <div class="w-full space-y-3 py-2">
-                        <div class="w-3/4 h-6 rounded skeleton"></div>
-                        <div class="w-1/2 h-4 rounded skeleton"></div>
-                        <div class="w-full h-10 rounded-lg skeleton mt-2"></div>
-                    </div>
-                </div>
-            </div>
-            <p class="text-center text-xs text-slate-500 mt-4 animate-pulse">Menghubungkan ke server premium...</p>
+        <div id="loader" class="hidden flex flex-col items-center py-10">
+            <div class="loader-dots relative w-20 h-5"><div></div><div></div><div></div><div></div></div>
+            <p class="text-slate-400 text-xs mt-4 animate-pulse">Sedang memproses data...</p>
         </div>
 
     </main>
 
-    <div id="toast" class="fixed top-24 right-4 z-[100] transform translate-x-[150%] transition-transform duration-300 flex items-center gap-3 px-4 py-3 bg-slate-800 border-l-4 border-blue-500 rounded shadow-2xl max-w-xs">
-        <i id="toastIcon" class="fa-solid fa-info-circle text-blue-500"></i>
-        <div>
-            <h4 id="toastTitle" class="font-bold text-sm text-white">Info</h4>
-            <p id="toastMsg" class="text-xs text-slate-400">Message here</p>
-        </div>
+    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 -translate-y-20 transition-all duration-300 z-[100] px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 glass border-t border-white/20">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toastMsg" class="text-sm font-semibold text-white">Berhasil</span>
     </div>
 
     <div id="aboutModal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="glass-panel bg-slate-900 p-8 rounded-3xl max-w-sm w-full text-center relative border border-slate-700">
+        <div class="glass bg-slate-900 p-8 rounded-3xl max-w-sm w-full text-center relative border border-slate-700">
             <button onclick="toggleModal('aboutModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center text-2xl text-white font-bold shadow-lg shadow-blue-600/30">IB</div>
-            <h3 class="text-xl font-bold text-white">Kaltain MultiLoader</h3>
-            <p class="text-xs text-slate-500 mb-6 mt-1">Version 3.0.1 (Stable)</p>
-            <div class="border-t border-slate-700 pt-4">
-                <p class="text-xs text-slate-400">Created with <i class="fa-solid fa-heart text-red-500 mx-1"></i> by</p>
-                <p class="text-lg font-bold text-blue-400 mt-1">【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
+            <div class="w-20 h-20 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl text-white font-bold shadow-lg shadow-blue-500/30">IB</div>
+            <h3 class="text-xl font-bold text-white mb-1">Multi Downloader</h3>
+            <p class="text-xs text-slate-500 mb-6">Versi Pro 3.5</p>
+            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Developer</p>
+                <p class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-wider">【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DATA API & CONFIG ---
         const apiBase = "https://api.ootaizumi.web.id/downloader/";
+        
+        // DATABASE API LENGKAP
         const platforms = {
             tiktok: { name: "TikTok", icon: "fa-brands fa-tiktok", color: "text-pink-500", match: ["tiktok.com"], apis: [{end:"tiktok",p:"url"},{end:"ssstiktok",p:"url"},{end:"snaptik",p:"url"}] },
             youtube: { name: "YouTube", icon: "fa-brands fa-youtube", color: "text-red-500", match: ["youtube.com","youtu.be"], apis: [{end:"youtube",p:"url",x:"&format=mp4"},{end:"youtubev2",p:"url"},{end:"youtube-play",p:"query"}] },
             spotify: { name: "Spotify", icon: "fa-brands fa-spotify", color: "text-green-500", match: ["spotify.com"], apis: [{end:"spotify-v2",p:"url"},{end:"spotify",p:"url"}] },
             instagram: { name: "Instagram", icon: "fa-brands fa-instagram", color: "text-purple-500", match: ["instagram.com"], apis: [{end:"instagram",p:"url"}] },
             facebook: { name: "Facebook", icon: "fa-brands fa-facebook", color: "text-blue-600", match: ["facebook.com","fb.watch"], apis: [{end:"facebook",p:"url"}] },
-            twitter: { name: "Twitter", icon: "fa-brands fa-x-twitter", color: "text-white", match: ["twitter.com","x.com"], apis: [{end:"twitter",p:"url"}] },
+            twitter: { name: "Twitter", icon: "fa-brands fa-x-twitter", color: "text-slate-300", match: ["twitter.com","x.com"], apis: [{end:"twitter",p:"url"}] },
             pinterest: { name: "Pinterest", icon: "fa-brands fa-pinterest", color: "text-red-600", match: ["pinterest.com","pin.it"], apis: [{end:"pinterest",p:"url"}] },
             soundcloud: { name: "SoundCloud", icon: "fa-brands fa-soundcloud", color: "text-orange-500", match: ["soundcloud.com"], apis: [{end:"soundcloud",p:"url"}] },
-            gdrive: { name: "Drive", icon: "fa-brands fa-google-drive", color: "text-green-400", match: ["drive.google.com"], apis: [{end:"gdrive",p:"url"}] },
+            rednote: { name: "RedNote", icon: "fa-solid fa-book", color: "text-red-400", match: ["xiaohongshu.com"], apis: [{end:"rednote",p:"url"}] },
+            telegram: { name: "Tele Sticker", icon: "fa-brands fa-telegram", color: "text-blue-400", match: ["t.me"], apis: [{end:"telegram-sticker",p:"url"}] },
+            gdrive: { name: "G-Drive", icon: "fa-brands fa-google-drive", color: "text-green-400", match: ["drive.google.com"], apis: [{end:"gdrive",p:"url"}] },
             mediafire: { name: "Mediafire", icon: "fa-solid fa-fire", color: "text-blue-400", match: ["mediafire.com"], apis: [{end:"mediafire",p:"url"}] },
+            sfile: { name: "Sfile", icon: "fa-solid fa-folder", color: "text-blue-500", match: ["sfile.mobi"], apis: [{end:"sfile",p:"url"}] },
             // Manual Only
-            ytsearch: { name: "Cari Lagu", icon: "fa-solid fa-magnifying-glass", color: "text-yellow-400", isSearch: true, apis: [{end:"youtube-play",p:"query"}] }
+            ytsearch: { name: "Cari Lagu", icon: "fa-solid fa-search", color: "text-yellow-400", isSearch: true, apis: [{end:"youtube-play",p:"query"}] }
         };
 
         let currentMode = 'auto';
 
-        // --- INIT UI ---
-        window.onload = () => {
-            const grid = document.getElementById('platformGrid');
-            Object.keys(platforms).forEach(k => {
-                const p = platforms[k];
-                // Show only 8 main items on grid to keep it clean, others via auto-detect
-                if(k === 'ytsearch' || Object.keys(platforms).indexOf(k) < 11) {
-                    const btn = document.createElement('button');
-                    btn.className = "flex flex-col items-center gap-2 group p-2 rounded-xl hover:bg-white/5 transition";
-                    btn.onclick = () => setManual(k);
-                    btn.innerHTML = `
-                        <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center group-hover:border-${p.color.split('-')[1]}-500/50 transition">
-                            <i class="${p.icon} ${p.color} text-lg"></i>
-                        </div>
-                        <span class="text-[10px] text-slate-400 group-hover:text-white">${p.name}</span>
-                    `;
-                    grid.appendChild(btn);
-                }
-            });
-            // Register SW
-            if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-        };
-
-        // --- LOGIC ---
-        function handleInput(val) {
-            const icon = document.getElementById('inputIcon');
-            const badge = document.getElementById('detectBadge');
-            
-            if(!val) {
-                resetMode();
-                return;
+        // Init Grid
+        const grid = document.getElementById('gridPlatform');
+        Object.keys(platforms).forEach(k => {
+            const p = platforms[k];
+            // Tampilkan sebagian saja agar rapi
+            if(['tiktok','youtube','spotify','instagram','facebook','twitter','ytsearch'].includes(k)) {
+                const btn = document.createElement('div');
+                btn.className = "flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition active:scale-95";
+                btn.onclick = () => setManual(k);
+                btn.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center shadow-lg border border-slate-700">
+                        <i class="${p.icon} ${p.color} text-lg"></i>
+                    </div>
+                    <span class="text-[10px] text-slate-400 font-medium">${p.name}</span>
+                `;
+                grid.appendChild(btn);
             }
+        });
 
+        function detectLink(val) {
+            if(!val) return resetUI();
+            
             let found = false;
             for(const [k, d] of Object.entries(platforms)) {
                 if(d.match && d.match.some(domain => val.includes(domain))) {
                     currentMode = k;
-                    icon.className = `${d.icon} ${d.color}`;
-                    document.getElementById('detectText').innerText = d.name;
-                    badge.classList.remove('hidden');
+                    document.getElementById('inputIcon').className = `${d.icon} ${d.color} text-xl`;
+                    document.getElementById('statusText').innerText = d.name;
+                    document.getElementById('statusInfo').classList.remove('hidden');
                     found = true;
                     break;
                 }
             }
             if(!found && currentMode === 'auto') {
-                icon.className = "fa-solid fa-link text-slate-500";
-                badge.classList.add('hidden');
+                document.getElementById('inputIcon').className = "fa-solid fa-link text-xl text-slate-500";
+                document.getElementById('statusInfo').classList.add('hidden');
             }
         }
 
@@ -267,130 +207,172 @@
             currentMode = key;
             const p = platforms[key];
             const input = document.getElementById('urlInput');
-            document.getElementById('detectText').innerText = "Mode: " + p.name;
-            document.getElementById('detectBadge').classList.remove('hidden');
-            document.getElementById('inputIcon').className = `${p.icon} ${p.color}`;
             
-            input.placeholder = p.isSearch ? "Ketik judul lagu..." : `Tempel link ${p.name}...`;
+            document.getElementById('inputIcon').className = `${p.icon} ${p.color} text-xl`;
+            document.getElementById('statusText').innerText = `Mode: ${p.name}`;
+            document.getElementById('statusInfo').classList.remove('hidden');
+            
+            input.placeholder = p.isSearch ? "Ketik judul lagu..." : `Link ${p.name}...`;
             input.value = '';
             input.focus();
-            showToast('Mode Ganti', `Beralih ke ${p.name}`, 'info');
+            showToast('Mode diubah ke ' + p.name, 'success');
         }
 
-        function resetMode() {
+        function resetUI() {
             currentMode = 'auto';
-            document.getElementById('detectBadge').classList.add('hidden');
-            document.getElementById('inputIcon').className = "fa-solid fa-link text-slate-500";
+            document.getElementById('inputIcon').className = "fa-solid fa-link text-xl text-slate-500";
+            document.getElementById('statusInfo').classList.add('hidden');
         }
 
-        async function executeDownload() {
+        async function processData() {
             const input = document.getElementById('urlInput').value.trim();
-            if(!input) return showToast('Error', 'Input tidak boleh kosong!', 'error');
+            if(!input) return showToast('Link kosong!', 'error');
 
-            if(currentMode === 'auto') {
-                 if(!input.startsWith('http')) return showToast('Info', 'Gunakan menu Cari Lagu untuk pencarian.', 'warning');
-                 return showToast('Error', 'Platform tidak dikenali. Pilih manual.', 'error');
+            if(currentMode === 'auto' && !input.startsWith('http')) {
+                return showToast('Link tidak valid atau gunakan fitur Cari Lagu', 'error');
             }
 
-            // UI State
-            document.getElementById('resultCard').classList.add('hidden');
+            // UI Loading
+            document.getElementById('resultBox').classList.add('hidden');
             document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('mainBtn').disabled = true;
+            document.getElementById('btnAction').disabled = true;
 
             const conf = platforms[currentMode];
             let success = false;
 
+            // Loop API (Fallback)
             for(let i=0; i<conf.apis.length; i++) {
-                const api = conf.apis[i];
                 try {
+                    const api = conf.apis[i];
                     let url = `${apiBase}${api.end}?${api.p}=${encodeURIComponent(input)}${api.x || ''}`;
+                    
                     const res = await fetch(url);
                     const json = await res.json();
                     
                     if(json && (json.url || json.result || json.data)) {
-                        renderUI(json);
+                        renderResult(json);
                         success = true;
                         break;
                     }
-                } catch(e) {
-                    console.log(`Server ${i} fail`);
-                }
+                } catch(e) { console.log('API '+i+' Fail'); }
             }
 
             document.getElementById('loader').classList.add('hidden');
-            document.getElementById('mainBtn').disabled = false;
-
-            if(!success) showToast('Gagal', 'Server sibuk atau link private.', 'error');
+            document.getElementById('btnAction').disabled = false;
+            
+            if(!success) showToast('Gagal mengambil data. Coba lagi.', 'error');
         }
 
-        function renderUI(data) {
-            const card = document.getElementById('resultCard');
+        function renderResult(data) {
+            const d = Array.isArray(data.result) ? data.result[0] : (data.result || data.data || data);
+            
+            // Set Metadata
+            document.getElementById('resThumb').src = d.thumbnail || d.cover || d.image || 'https://via.placeholder.com/300?text=No+Cover';
+            document.getElementById('resTitle').innerText = d.title || d.caption || d.name || 'Media Found';
+            document.getElementById('resPlatform').innerText = platforms[currentMode].name;
+
             const list = document.getElementById('downloadList');
-            list.innerHTML = ''; // Clear old
+            list.innerHTML = '';
 
-            // Normalize
-            let d = data.result || data.data || data;
-            if(Array.isArray(d)) d = d[0];
-
-            // Set Meta
-            const img = d.thumbnail || d.cover || d.image || 'https://via.placeholder.com/150/0f172a/ffffff?text=No+Cover';
-            document.getElementById('resThumb').src = img;
-            document.getElementById('resTitle').innerText = d.title || d.caption || d.name || "Media Found";
-            document.getElementById('resSource').innerText = platforms[currentMode].name;
-
-            // Helper for buttons
-            const addBtn = (url, label, type='download') => {
-                const isVideo = type === 'video';
-                const icon = isVideo ? 'fa-video' : (type === 'audio' ? 'fa-music' : 'fa-download');
+            // --- TOMBOL DOWNLOAD BUILDER ---
+            const createBtn = (url, label, type) => {
+                const isVid = type === 'video';
+                const icon = isVid ? 'fa-video' : (type === 'audio' ? 'fa-music' : 'fa-file-arrow-down');
+                
                 const div = document.createElement('div');
                 div.className = "flex gap-2";
-                div.innerHTML = `
-                    <a href="${url}" target="_blank" download class="flex-grow bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2.5 px-4 rounded-lg flex items-center justify-between transition text-sm font-medium group">
-                        <span class="flex items-center gap-2"><i class="fa-solid ${icon} ${isVideo ? 'text-blue-400':'text-purple-400'}"></i> ${label}</span>
-                        <i class="fa-solid fa-arrow-down text-slate-500 group-hover:text-white"></i>
-                    </a>
-                    <button onclick="window.open('${url}', '_blank')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 rounded-lg border border-slate-700" title="Paksa Buka (Jika Download Gagal)">
-                        <i class="fa-solid fa-external-link-alt text-xs"></i>
-                    </button>
-                `;
+                
+                // FORCE DOWNLOAD BUTTON
+                const dlBtn = document.createElement('button');
+                dlBtn.className = "flex-grow bg-blue-600 hover:bg-blue-500 text-white py-3 px-4 rounded-xl flex items-center justify-between transition shadow-lg active:scale-95";
+                dlBtn.innerHTML = `<span class="flex items-center gap-2 font-semibold text-sm"><i class="fa-solid ${icon}"></i> ${label}</span> <i class="fa-solid fa-download opacity-70"></i>`;
+                
+                // Event Listener untuk Force Download
+                dlBtn.onclick = () => forceDownload(url, `Download_${Date.now()}.${isVid?'mp4':'mp3'}`);
+                
+                div.appendChild(dlBtn);
                 list.appendChild(div);
             };
 
-            // Logic Extraction
-            if(d.download && d.download.url) addBtn(d.download.url, 'Download MP3', 'audio');
-            else if(d.url) addBtn(d.url, 'Download File Utama', 'download');
+            // Logic Extract URL
+            if(d.download && d.download.url) createBtn(d.download.url, 'Download MP3', 'audio');
+            else if(d.url) createBtn(d.url, 'Download File', 'download');
             
-            if(d.video) addBtn(d.video, 'Download Video', 'video');
-            if(d.audio) addBtn(d.audio, 'Download Audio', 'audio');
-            
-            // Handle Arrays (Slides)
+            if(d.video) createBtn(d.video, 'Download Video', 'video');
+            if(d.audio) createBtn(d.audio, 'Download Audio', 'audio');
+
             if(Array.isArray(data.result) && data.result.length > 1) {
-                data.result.forEach((item, i) => {
-                    if(typeof item === 'string') addBtn(item, `Slide ${i+1}`, 'video');
-                    else if(item.url) addBtn(item.url, `Download ${i+1}`, 'download');
+                data.result.forEach((x, i) => {
+                   if(typeof x === 'string') createBtn(x, `Slide ${i+1}`, 'video');
+                   else if(x.url) createBtn(x.url, `Item ${i+1}`, 'download');
                 });
             }
 
-            card.classList.remove('hidden');
-            card.scrollIntoView({behavior:'smooth', block:'center'});
+            document.getElementById('resultBox').classList.remove('hidden');
         }
 
-        // --- UTILS ---
-        function showToast(title, msg, type) {
+        // --- FUNGSI UTAMA: FORCE DOWNLOAD ---
+        async function forceDownload(url, filename) {
+            showToast('Sedang mengunduh...', 'process');
+            
+            try {
+                // Metode 1: Fetch Blob (Paling Ampuh tapi butuh CORS)
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network fail');
+                
+                const blob = await response.blob();
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+                
+                showToast('Disimpan ke Galeri!', 'success');
+                
+            } catch (error) {
+                // Metode 2: Fallback (Jika server memblokir fetch)
+                console.warn("Fetch failed, trying fallback", error);
+                
+                const link = document.createElement("a");
+                link.href = url;
+                link.target = "_blank";
+                link.download = filename; // Browser mungkin mengabaikan ini jika cross-origin
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showToast('Membuka file (Manual Save)', 'error');
+            }
+        }
+
+        // Utils
+        function showToast(msg, type) {
             const t = document.getElementById('toast');
-            const icons = { error: 'fa-times-circle text-red-500', info: 'fa-info-circle text-blue-500', warning: 'fa-exclamation-triangle text-yellow-500' };
+            const icon = document.getElementById('toastIcon');
             
-            document.getElementById('toastTitle').innerText = title;
             document.getElementById('toastMsg').innerText = msg;
-            document.getElementById('toastIcon').className = `fa-solid ${icons[type] || icons.info}`;
-            t.className = `fixed top-24 right-4 z-[100] transform transition-transform duration-300 flex items-center gap-3 px-4 py-3 bg-slate-800 border-l-4 rounded shadow-2xl max-w-xs ${type === 'error' ? 'border-red-500' : 'border-blue-500'}`;
             
-            t.classList.remove('translate-x-[150%]');
-            setTimeout(() => t.classList.add('translate-x-[150%]'), 3000);
+            if(type === 'error') {
+                t.classList.replace('border-white/20', 'border-red-500');
+                icon.className = 'fa-solid fa-circle-xmark text-red-500';
+            } else if(type === 'process') {
+                 icon.className = 'fa-solid fa-spinner fa-spin text-blue-400';
+            } else {
+                t.classList.replace('border-red-500', 'border-white/20');
+                icon.className = 'fa-solid fa-circle-check text-green-400';
+            }
+            
+            t.classList.remove('-translate-y-20');
+            setTimeout(() => t.classList.add('-translate-y-20'), 3000);
         }
-
+        
+        function closeResult() { document.getElementById('resultBox').classList.add('hidden'); }
         function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
-        function closeResult() { document.getElementById('resultCard').classList.add('hidden'); }
+        
+        // PWA Reg
+        if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
     </script>
 </body>
 </html>
