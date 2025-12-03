@@ -16,13 +16,5 @@
   ],
   "categories": ["utilities", "productivity"],
   "lang": "id",
-  "dir": "ltr",
-  "shortcuts": [
-    {
-      "name": "Download Video",
-      "short_name": "Download",
-      "description": "Download video dari berbagai platform",
-      "url": "/"
-    }
-  ]
+  "dir": "ltr"
 }
