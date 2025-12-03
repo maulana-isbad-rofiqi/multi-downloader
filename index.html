@@ -216,6 +216,25 @@
         .hidden {
             display: none !important;
         }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -273,7 +292,7 @@
         <section class="mb-12">
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 font-poppins">Download Video & Musik <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Multi Platform</span></h2>
-                <p class="text-gray-400 text-lg">Download konten dari TikTok, YouTube, Instagram, Spotify, Facebook, dan 10+ platform lainnya dengan mudah!</p>
+                <p class="text-gray-400 text-lg">Download konten dari TikTok, YouTube, Instagram, Spotify, Facebook, dan platform lainnya dengan mudah!</p>
             </div>
             
             <!-- URL Input -->
@@ -387,14 +406,15 @@
                             </div>
                         </div>
                         
-                        <!-- Force Download Button -->
-                        <div id="forceDownloadSection" class="hidden">
-                            <div class="border-l-4 border-yellow-500 pl-4 py-2 mb-4 bg-yellow-500/10 rounded-r-lg">
-                                <p class="text-yellow-400 font-medium"><i class="fas fa-exclamation-triangle mr-2"></i>Jika download tidak berhasil, coba:</p>
+                        <!-- Alternative Methods -->
+                        <div class="mt-6 p-4 bg-blue-900/20 rounded-xl border border-blue-700/30">
+                            <h5 class="font-bold text-blue-300 mb-2"><i class="fas fa-lightbulb mr-2"></i>Tips Download:</h5>
+                            <p class="text-sm text-gray-300">Jika download tidak berhasil, coba:</p>
+                            <div class="flex flex-wrap gap-2 mt-3">
+                                <button id="method1Btn" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-sm transition">Method 1: Direct</button>
+                                <button id="method2Btn" class="px-3 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-sm transition">Method 2: Proxy</button>
+                                <button id="method3Btn" class="px-3 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm transition">Method 3: Blob</button>
                             </div>
-                            <button id="forceDownloadBtn" class="glass-card px-6 py-3 rounded-lg font-bold flex items-center w-full justify-center hover:bg-yellow-500/10 border-yellow-500/30">
-                                <i class="fas fa-bolt mr-2 text-yellow-400"></i> Force Download
-                            </button>
                         </div>
                         
                         <!-- Status Message -->
@@ -427,7 +447,7 @@
                         <ul class="space-y-3 text-gray-300">
                             <li class="flex items-start">
                                 <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
-                                <span>Download video dan audio dari 15+ platform populer</span>
+                                <span>Download video dan audio dari 10+ platform populer</span>
                             </li>
                             <li class="flex items-start">
                                 <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
@@ -435,15 +455,15 @@
                             </li>
                             <li class="flex items-start">
                                 <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
-                                <span>Preview thumbnail dan informasi sebelum download</span>
-                            </li>
-                            <li class="flex items-start">
-                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
-                                <span>Pilihan format MP3 dan MP4</span>
+                                <span>3 metode download berbeda untuk memastikan berhasil</span>
                             </li>
                             <li class="flex items-start">
                                 <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
                                 <span>Dapat diinstall sebagai PWA (Progressive Web App)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Desain glassmorphism yang modern</span>
                             </li>
                         </ul>
                     </div>
@@ -455,7 +475,7 @@
                             <li>Tempel URL pada input field di halaman utama</li>
                             <li>Klik tombol "Download" atau pilih platform manual</li>
                             <li>Pilih format yang diinginkan (MP3/MP4)</li>
-                            <li>Klik tombol download untuk mendapatkan file</li>
+                            <li>Jika tidak berhasil, coba metode alternatif yang tersedia</li>
                         </ol>
                     </div>
                     
@@ -468,7 +488,7 @@
                                 </div>
                                 <div>
                                     <p class="text-lg font-bold">Multi Downloader</p>
-                                    <p class="text-gray-400">Dikembangkan dengan ❤️ menggunakan API publik</p>
+                                    <p class="text-gray-400">Dikembangkan dengan ❤️ menggunakan berbagai API publik</p>
                                     <p class="mt-3 font-bold text-2xl bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">by 【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
                                 </div>
                             </div>
@@ -509,84 +529,106 @@
     </footer>
 
     <script>
-        // ========== API ENDPOINTS (DIPERBAIKI DENGAN BANYAK CADANGAN) ==========
+        // ========== API ENDPOINTS YANG MASIH BEKERJA ==========
         const API_ENDPOINTS = {
+            // TikTok - APIs yang masih aktif
             tiktok: [
-                // API Utama TikTok
-                { url: 'https://tikwm.com/api/', params: 'url', method: 'POST' },
-                { url: 'https://www.tikwm.com/api/', params: 'url', method: 'POST' },
-                { url: 'https://api.tiklydown.eu.org/api/download', params: 'url' },
-                { url: 'https://tikcdn.io/api/', params: 'url' },
-                { url: 'https://tiktok-video-no-watermark.p.rapidapi.com/', params: 'url', headers: { 'X-RapidAPI-Key': 'free', 'X-RapidAPI-Host': 'tiktok-video-no-watermark.p.rapidapi.com' }},
-                
-                // Cadangan dari ootaizumi
-                { url: 'https://api.ootaizumi.web.id/downloader/tiktok', params: 'url' },
-                { url: 'https://api.ootaizumi.web.id/downloader/ssstiktok', params: 'url' },
-                { url: 'https://api.ootaizumi.web.id/downloader/snaptik', params: 'url' }
+                { 
+                    name: 'TikTok API 1',
+                    url: 'https://tikwm.com/api/', 
+                    method: 'POST',
+                    params: { url: '' },
+                    getDownloadUrl: (data) => data.data?.play || data.data?.wmplay || data.data?.hdplay
+                },
+                {
+                    name: 'TikTok API 2',
+                    url: 'https://api.tiklydown.eu.org/api/download',
+                    method: 'GET',
+                    params: { url: '' },
+                    getDownloadUrl: (data) => data.videoUrl || data.play
+                },
+                {
+                    name: 'TikTok API 3 (via CORS Proxy)',
+                    url: 'https://corsproxy.io/?',
+                    proxyUrl: 'https://www.tikwm.com/api/',
+                    method: 'GET',
+                    params: { url: '' },
+                    getDownloadUrl: (data) => data.data?.play || data.data?.wmplay
+                }
             ],
             
+            // YouTube - APIs yang masih aktif
             youtube: [
-                // API Utama YouTube
-                { url: 'https://co.wuk.sh/api/json', params: 'url', method: 'POST' },
-                { url: 'https://yt5s.com/api/ajaxSearch', params: 'q', method: 'POST', formData: true },
-                { url: 'https://yt1s.com/api/ajaxSearch/index', params: 'q', method: 'POST', formData: true },
-                { url: 'https://loader.to/api/ajaxSearch.php', params: 'q', method: 'POST' },
-                
-                // Cadangan lainnya
-                { url: 'https://api.ootaizumi.web.id/downloader/youtube', params: 'url' },
-                { url: 'https://api.ootaizumi.web.id/downloader/youtubev2', params: 'url' }
+                {
+                    name: 'YouTube API 1',
+                    url: 'https://corsproxy.io/?',
+                    proxyUrl: 'https://yt5s.com/api/ajaxSearch/',
+                    method: 'POST',
+                    params: { q: '', vt: 'home' },
+                    getDownloadUrl: (data) => {
+                        if (data.vid && data.links) {
+                            const mp4Links = data.links.mp4;
+                            if (mp4Links) {
+                                return Object.values(mp4Links)[0];
+                            }
+                        }
+                        return null;
+                    }
+                },
+                {
+                    name: 'YouTube API 2',
+                    url: 'https://corsproxy.io/?',
+                    proxyUrl: 'https://loader.to/ajax/download.php',
+                    method: 'POST',
+                    params: { url: '', format: 'mp4' },
+                    getDownloadUrl: (data) => data.downloadUrl
+                },
+                {
+                    name: 'YouTube Direct',
+                    url: 'direct',
+                    method: 'DIRECT',
+                    getDownloadUrl: (url) => {
+                        // Extract video ID
+                        const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)?.[1];
+                        if (videoId) {
+                            return `https://www.youtubepp.com/watch?v=${videoId}`;
+                        }
+                        return null;
+                    }
+                }
             ],
             
+            // Instagram - APIs yang masih aktif
             instagram: [
-                // API Utama Instagram
-                { url: 'https://api.douyin.wtf/api', params: 'url', query: 'platform=instagram' },
-                { url: 'https://igram.io/api/', params: 'url' },
-                { url: 'https://www.instagramsave.com/api/ig', params: 'url' },
-                
-                // Cadangan
-                { url: 'https://api.ootaizumi.web.id/downloader/instagram', params: 'url' }
+                {
+                    name: 'Instagram API 1',
+                    url: 'https://corsproxy.io/?',
+                    proxyUrl: 'https://igram.io/api/ig/download',
+                    method: 'GET',
+                    params: { url: '' },
+                    getDownloadUrl: (data) => data.data?.video || data.videoUrl
+                },
+                {
+                    name: 'Instagram Direct',
+                    url: 'direct',
+                    method: 'DIRECT',
+                    getDownloadUrl: (url) => {
+                        // Instagram direct download pattern
+                        return url.replace('instagram.com', 'ddinstagram.com');
+                    }
+                }
             ],
             
+            // Spotify - Simulasi (karena Spotify API sulit)
             spotify: [
-                // API Utama Spotify
-                { url: 'https://api.spotifydown.com/download', params: 'url' },
-                { url: 'https://spotifymate.com/api/convert', params: 'url', method: 'POST' },
-                { url: 'https://spotify-downloader-api.vercel.app/api/download', params: 'url' },
-                
-                // Cadangan
-                { url: 'https://api.ootaizumi.web.id/downloader/spotify-v2', params: 'url' },
-                { url: 'https://api.ootaizumi.web.id/downloader/spotify', params: 'url' }
-            ],
-            
-            facebook: [
-                // API Utama Facebook
-                { url: 'https://api.douyin.wtf/api', params: 'url', query: 'platform=facebook' },
-                { url: 'https://fbdownloader.net/api/', params: 'url' },
-                
-                // Cadangan
-                { url: 'https://api.ootaizumi.web.id/downloader/facebook', params: 'url' }
-            ],
-            
-            twitter: [
-                // API Utama Twitter/X
-                { url: 'https://twitsave.com/info', params: 'url' },
-                { url: 'https://api.douyin.wtf/api', params: 'url', query: 'platform=twitter' },
-                { url: 'https://twdown.net/download', params: 'url' },
-                
-                // Cadangan
-                { url: 'https://api.ootaizumi.web.id/downloader/twitter', params: 'url' }
-            ],
-            
-            soundcloud: [
-                // API SoundCloud
-                { url: 'https://api.douyin.wtf/api', params: 'url', query: 'platform=soundcloud' },
-                { url: 'https://api.ootaizumi.web.id/downloader/soundcloud', params: 'url' }
-            ],
-            
-            pinterest: [
-                // API Pinterest
-                { url: 'https://api.douyin.wtf/api', params: 'url', query: 'platform=pinterest' },
-                { url: 'https://api.ootaizumi.web.id/downloader/pinterest', params: 'url' }
+                {
+                    name: 'Spotify Converter',
+                    url: 'https://corsproxy.io/?',
+                    proxyUrl: 'https://spotify-downloader-api.vercel.app/api/download',
+                    method: 'GET',
+                    params: { url: '' },
+                    getDownloadUrl: (data) => data.downloadUrl || data.url
+                }
             ]
         };
 
@@ -634,8 +676,6 @@
             previewDescription: document.getElementById('previewDescription'),
             platformBadge: document.getElementById('platformBadge'),
             downloadOptions: document.getElementById('downloadOptions'),
-            forceDownloadSection: document.getElementById('forceDownloadSection'),
-            forceDownloadBtn: document.getElementById('forceDownloadBtn'),
             statusMessage: document.getElementById('statusMessage'),
             loadingOverlay: document.getElementById('loadingOverlay'),
             loadingDetail: document.getElementById('loadingDetail'),
@@ -647,7 +687,10 @@
             installPrompt: document.getElementById('installPrompt'),
             installBtn: document.getElementById('installBtn'),
             dismissInstall: document.getElementById('dismissInstall'),
-            closeInstall: document.getElementById('closeInstall')
+            closeInstall: document.getElementById('closeInstall'),
+            method1Btn: document.getElementById('method1Btn'),
+            method2Btn: document.getElementById('method2Btn'),
+            method3Btn: document.getElementById('method3Btn')
         };
 
         // ========== UTILITY FUNCTIONS ==========
@@ -687,7 +730,7 @@
             }
             
             elements.statusMessage.innerHTML = `
-                <div class="${bgColor} ${borderColor} border rounded-xl p-4 flex items-start">
+                <div class="${bgColor} ${borderColor} border rounded-xl p-4 flex items-start fade-in">
                     <i class="fas ${icon} mr-3 mt-1 text-lg"></i>
                     <div class="flex-1">${message}</div>
                 </div>
@@ -709,11 +752,33 @@
 
         // ========== API PROCESSING ==========
         async function callAPI(apiConfig, url) {
-            const { endpoint, method = 'GET', params, query = '', formData = false } = apiConfig;
+            const { method, params, getDownloadUrl } = apiConfig;
+            let apiUrl = apiConfig.url;
+            
+            // Handle proxy URLs
+            if (apiConfig.proxyUrl) {
+                const proxyParams = new URLSearchParams();
+                proxyParams.append('url', apiConfig.proxyUrl);
+                apiUrl += encodeURIComponent(apiConfig.proxyUrl + '?' + new URLSearchParams(params).toString());
+            } else if (apiConfig.url !== 'direct') {
+                // Build URL for GET requests
+                if (method === 'GET') {
+                    const urlParams = new URLSearchParams();
+                    Object.entries(params).forEach(([key, value]) => {
+                        urlParams.append(key, value || url);
+                    });
+                    apiUrl += '?' + urlParams.toString();
+                }
+            }
             
             try {
-                let apiUrl = endpoint;
-                let options = {
+                // Handle direct method (no API call)
+                if (apiConfig.method === 'DIRECT') {
+                    const downloadUrl = getDownloadUrl(url);
+                    return { success: !!downloadUrl, data: { downloadUrl, title: 'Direct Download' } };
+                }
+                
+                const options = {
                     method: method,
                     headers: {
                         'Accept': 'application/json',
@@ -721,28 +786,26 @@
                     }
                 };
                 
-                // Add custom headers if provided
-                if (apiConfig.headers) {
-                    options.headers = { ...options.headers, ...apiConfig.headers };
-                }
-                
-                // Handle different API types
-                if (method === 'GET') {
-                    const separator = apiUrl.includes('?') ? '&' : '?';
-                    apiUrl = `${apiUrl}${separator}${params}=${encodeURIComponent(url)}${query ? '&' + query : ''}`;
-                } else if (method === 'POST') {
-                    if (formData) {
-                        const formDataObj = new FormData();
-                        formDataObj.append(params, url);
-                        if (apiUrl.includes('yt5s')) {
-                            formDataObj.append('vt', 'home');
-                        }
-                        options.body = formDataObj;
+                // Handle POST requests
+                if (method === 'POST') {
+                    if (apiConfig.proxyUrl) {
+                        // For proxy POST requests, we need to send as form data
+                        const formData = new FormData();
+                        Object.entries(params).forEach(([key, value]) => {
+                            formData.append(key, value || url);
+                        });
+                        options.body = formData;
                     } else {
                         options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-                        options.body = `${params}=${encodeURIComponent(url)}${query ? '&' + query : ''}`;
+                        const urlParams = new URLSearchParams();
+                        Object.entries(params).forEach(([key, value]) => {
+                            urlParams.append(key, value || url);
+                        });
+                        options.body = urlParams.toString();
                     }
                 }
+                
+                showLoading(`Mencoba ${apiConfig.name}...`);
                 
                 const response = await fetch(apiUrl, options);
                 
@@ -751,9 +814,23 @@
                 }
                 
                 const data = await response.json();
-                return { success: true, data };
+                const downloadUrl = getDownloadUrl(data);
+                
+                if (downloadUrl) {
+                    return { 
+                        success: true, 
+                        data: {
+                            downloadUrl,
+                            title: data.title || data.data?.title || 'Download',
+                            thumbnail: data.cover || data.data?.cover || '',
+                            description: data.desc || data.data?.desc || ''
+                        }
+                    };
+                } else {
+                    throw new Error('No download URL found');
+                }
             } catch (error) {
-                console.error(`API Error: ${error.message}`);
+                console.error(`API Error (${apiConfig.name}):`, error.message);
                 return { success: false, error: error.message };
             }
         }
@@ -781,145 +858,73 @@
                 }
             }
 
-            showLoading(`Mengambil data dari ${PLATFORM_NAMES[platform]}...`);
-            clearStatus();
-
+            // Check if we have APIs for this platform
             const endpoints = API_ENDPOINTS[platform];
             if (!endpoints || endpoints.length === 0) {
-                hideLoading();
-                showStatus('error', 'API untuk platform ini belum tersedia.');
+                // Try alternative method
+                showAlternativeMethods(url, platform);
                 return;
             }
 
-            let result = null;
-            let success = false;
+            clearStatus();
+            showLoading(`Mencari download link untuk ${PLATFORM_NAMES[platform]}...`);
 
             // Try each API endpoint
             for (let i = 0; i < endpoints.length; i++) {
-                const endpointConfig = endpoints[i];
-                elements.loadingDetail.textContent = `Mencoba API ${i + 1}/${endpoints.length}...`;
+                const endpoint = endpoints[i];
+                const result = await callAPI(endpoint, url);
                 
-                const apiResult = await callAPI(endpointConfig, url);
-                
-                if (apiResult.success) {
-                    const data = apiResult.data;
-                    
-                    // Process data based on platform
-                    const processedData = processAPIData(data, platform);
-                    if (processedData) {
-                        result = processedData;
-                        success = true;
-                        break;
-                    }
+                if (result.success) {
+                    hideLoading();
+                    showPreview(result.data, platform);
+                    showStatus('success', `Berhasil menemukan link download menggunakan ${endpoint.name}!`);
+                    return;
                 }
+                
+                // Wait a bit before trying next API
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
             hideLoading();
-
-            if (success) {
-                showPreview(result, platform);
-                showStatus('success', `Berhasil mengambil data dari ${PLATFORM_NAMES[platform]}!`);
-            } else {
-                showStatus('error', 'Gagal mengambil data. Coba lagi nanti atau gunakan URL yang berbeda.');
-            }
+            // If all APIs fail, show alternative methods
+            showAlternativeMethods(url, platform);
         }
 
-        function processAPIData(data, platform) {
-            try {
-                let result = {
-                    title: '',
-                    thumbnail: '',
-                    description: '',
-                    video_url: '',
-                    audio_url: ''
-                };
-                
-                switch(platform) {
-                    case 'tiktok':
-                        if (data.data) {
-                            const item = data.data;
-                            result.title = item.title || 'TikTok Video';
-                            result.thumbnail = item.cover || '';
-                            result.video_url = item.play || item.wmplay || item.hdplay || '';
-                            result.audio_url = item.music || '';
-                        } else if (data.play) {
-                            result.title = data.title || 'TikTok Video';
-                            result.thumbnail = data.cover || '';
-                            result.video_url = data.play || data.wmplay || data.hdplay || '';
-                            result.audio_url = data.music || '';
-                        }
-                        break;
-                        
-                    case 'youtube':
-                        if (data.videoId) {
-                            result.title = data.title || 'YouTube Video';
-                            result.thumbnail = `https://i.ytimg.com/vi/${data.videoId}/hqdefault.jpg`;
-                            if (data.links && data.links.mp4) {
-                                result.video_url = data.links.mp4['360p'] || data.links.mp4['720p'] || Object.values(data.links.mp4)[0];
-                            }
-                            if (data.links && data.links.mp3) {
-                                result.audio_url = Object.values(data.links.mp3)[0];
-                            }
-                        } else if (data.title) {
-                            result.title = data.title;
-                            result.thumbnail = data.thumbnail || '';
-                            result.video_url = data.url || data.downloadUrl || '';
-                        }
-                        break;
-                        
-                    case 'instagram':
-                        if (data.media) {
-                            const media = Array.isArray(data.media) ? data.media[0] : data.media;
-                            result.title = data.title || 'Instagram Post';
-                            result.thumbnail = media.thumbnail || media.url || '';
-                            result.video_url = media.url || '';
-                        } else if (data.url) {
-                            result.title = 'Instagram Media';
-                            result.video_url = data.url;
-                        }
-                        break;
-                        
-                    case 'spotify':
-                        if (data.metadata) {
-                            result.title = data.metadata.title || 'Spotify Track';
-                            result.thumbnail = data.metadata.cover || '';
-                            result.audio_url = data.link || data.url || '';
-                        } else if (data.title) {
-                            result.title = data.title;
-                            result.audio_url = data.url || '';
-                        }
-                        break;
-                        
-                    default:
-                        if (data.title) result.title = data.title;
-                        if (data.thumbnail) result.thumbnail = data.thumbnail;
-                        if (data.video_url) result.video_url = data.video_url;
-                        if (data.audio_url) result.audio_url = data.audio_url;
-                        if (data.url) result.video_url = data.url;
-                }
-                
-                // Fallback if no title
-                if (!result.title) result.title = `Download dari ${PLATFORM_NAMES[platform]}`;
-                if (!result.description) result.description = `Konten dari ${PLATFORM_NAMES[platform]}`;
-                
-                return result;
-            } catch (error) {
-                console.error('Error processing API data:', error);
-                return null;
-            }
+        function showAlternativeMethods(url, platform) {
+            // Create mock data for preview
+            const mockData = {
+                title: `Download dari ${PLATFORM_NAMES[platform]}`,
+                thumbnail: getPlatformThumbnail(platform),
+                description: 'Coba metode download alternatif di bawah',
+                downloadUrl: url
+            };
+            
+            showPreview(mockData, platform);
+            showStatus('warning', 'API tidak tersedia. Coba metode alternatif di bawah.');
+        }
+
+        function getPlatformThumbnail(platform) {
+            const thumbnails = {
+                tiktok: 'https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea?w=400&h=225&fit=crop',
+                youtube: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w-400&h=225&fit=crop',
+                instagram: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=225&fit=crop',
+                spotify: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=225&fit=crop',
+                facebook: 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=400&h=225&fit=crop',
+                twitter: 'https://images.unsplash.com/photo-1611605698335-8b1569810433?w=400&h=225&fit=crop'
+            };
+            return thumbnails[platform] || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="%231e293b"/><text x="200" y="120" font-family="Arial" font-size="18" fill="%234b5563" text-anchor="middle">Thumbnail</text></svg>';
         }
 
         // ========== PREVIEW & DOWNLOAD ==========
         function showPreview(data, platform) {
             // Set thumbnail
-            elements.previewThumbnail.src = data.thumbnail || 
-                'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="%231e293b"/><text x="200" y="120" font-family="Arial" font-size="18" fill="%234b5563" text-anchor="middle">No thumbnail</text></svg>';
+            elements.previewThumbnail.src = data.thumbnail;
             
             // Set title
             elements.previewTitle.textContent = data.title || 'Judul tidak tersedia';
             
             // Set description
-            elements.previewDescription.textContent = data.description || 'Deskripsi tidak tersedia';
+            elements.previewDescription.textContent = data.description || 'Gunakan metode download alternatif jika diperlukan';
             
             // Set platform badge
             elements.platformBadge.textContent = PLATFORM_NAMES[platform] || platform;
@@ -927,33 +932,34 @@
             
             // Clear previous options
             elements.downloadOptions.innerHTML = '';
-            elements.forceDownloadSection.classList.add('hidden');
+            
+            // Store current data
+            window.currentDownloadData = { url: data.downloadUrl, platform, title: data.title };
             
             // Add download options
-            if (data.video_url) {
-                const videoOption = document.createElement('div');
-                videoOption.className = 'download-option cursor-pointer';
-                videoOption.innerHTML = `
-                    <div class="flex items-center">
-                        <div class="mr-4 text-blue-400">
-                            <i class="fas fa-file-video text-2xl"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-lg">Download Video (MP4)</h4>
-                            <p class="text-sm text-gray-400">Klik untuk mengunduh file video</p>
-                        </div>
-                        <div class="text-gray-400">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
+            const videoOption = document.createElement('div');
+            videoOption.className = 'download-option cursor-pointer';
+            videoOption.innerHTML = `
+                <div class="flex items-center">
+                    <div class="mr-4 text-blue-400">
+                        <i class="fas fa-file-video text-2xl"></i>
                     </div>
-                `;
-                videoOption.addEventListener('click', () => {
-                    downloadFile(data.video_url, `${data.title.replace(/[^a-z0-9]/gi, '_')}.mp4`);
-                });
-                elements.downloadOptions.appendChild(videoOption);
-            }
+                    <div class="flex-1">
+                        <h4 class="font-bold text-lg">Download Video (MP4)</h4>
+                        <p class="text-sm text-gray-400">Klik untuk mengunduh file video</p>
+                    </div>
+                    <div class="text-gray-400">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            `;
+            videoOption.addEventListener('click', () => {
+                downloadFile(data.downloadUrl, `${data.title.replace(/[^a-z0-9]/gi, '_')}.mp4`);
+            });
+            elements.downloadOptions.appendChild(videoOption);
             
-            if (data.audio_url) {
+            // For audio platforms
+            if (platform === 'spotify' || platform === 'soundcloud') {
                 const audioOption = document.createElement('div');
                 audioOption.className = 'download-option cursor-pointer';
                 audioOption.innerHTML = `
@@ -971,10 +977,13 @@
                     </div>
                 `;
                 audioOption.addEventListener('click', () => {
-                    downloadFile(data.audio_url, `${data.title.replace(/[^a-z0-9]/gi, '_')}.mp3`);
+                    downloadFile(data.downloadUrl, `${data.title.replace(/[^a-z0-9]/gi, '_')}.mp3`);
                 });
                 elements.downloadOptions.appendChild(audioOption);
             }
+            
+            // Setup alternative methods
+            setupAlternativeMethods(data.downloadUrl, data.title, platform);
             
             // Show preview section
             elements.previewSection.classList.remove('hidden');
@@ -986,6 +995,27 @@
             }, 100);
         }
 
+        function setupAlternativeMethods(url, title, platform) {
+            // Method 1: Direct Download
+            elements.method1Btn.onclick = () => {
+                showStatus('info', 'Mencoba download langsung...');
+                downloadDirect(url, `${title.replace(/[^a-z0-9]/gi, '_')}.mp4`);
+            };
+            
+            // Method 2: Proxy Download
+            elements.method2Btn.onclick = () => {
+                showStatus('info', 'Mencoba download dengan proxy...');
+                downloadWithProxy(url, `${title.replace(/[^a-z0-9]/gi, '_')}.mp4`);
+            };
+            
+            // Method 3: Blob Download
+            elements.method3Btn.onclick = () => {
+                showStatus('info', 'Mencoba download dengan metode blob...');
+                downloadWithBlob(url, `${title.replace(/[^a-z0-9]/gi, '_')}.mp4`);
+            };
+        }
+
+        // ========== DOWNLOAD METHODS ==========
         function downloadFile(url, filename) {
             if (!url) {
                 showStatus('error', 'URL download tidak tersedia.');
@@ -994,44 +1024,58 @@
             
             showStatus('info', 'Mempersiapkan download...');
             
-            // Try direct download
+            // Try direct download first
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                
+                if ('download' in link) {
+                    link.download = filename;
+                }
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showStatus('success', 'Download telah dimulai. Jika tidak berhasil, coba metode alternatif di bawah.');
+            }, 500);
+        }
+
+        function downloadDirect(url, filename) {
             const link = document.createElement('a');
             link.href = url;
             link.target = '_blank';
-            
-            // Try to use download attribute for modern browsers
-            if ('download' in link) {
-                link.download = filename;
-            }
-            
+            link.download = filename;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Show force download option
-            elements.forceDownloadSection.classList.remove('hidden');
-            elements.forceDownloadBtn.onclick = () => forceDownload(url, filename);
-            
-            showStatus('success', 'Download telah dimulai. Jika tidak berhasil, gunakan tombol Force Download di bawah.');
+            showStatus('info', 'Direct download dijalankan. Cek folder downloads.');
         }
 
-        async function forceDownload(url, filename) {
-            showLoading('Menggunakan metode Force Download...');
+        function downloadWithProxy(url, filename) {
+            // Use CORS proxy
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+            const link = document.createElement('a');
+            link.href = proxyUrl;
+            link.target = '_blank';
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showStatus('info', 'Proxy download dijalankan.');
+        }
+
+        async function downloadWithBlob(url, filename) {
+            showLoading('Mengunduh dengan metode blob...');
             
             try {
-                // Add timestamp to avoid cache
-                const cacheBusterUrl = url + (url.includes('?') ? '&' : '?') + '_=' + Date.now();
-                
-                const response = await fetch(cacheBusterUrl, {
-                    mode: 'cors',
-                    headers: {
-                        'Accept': '*/*',
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                    }
-                });
+                // Try to fetch through CORS proxy
+                const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    throw new Error(`HTTP ${response.status}`);
                 }
                 
                 const blob = await response.blob();
@@ -1048,11 +1092,10 @@
                 setTimeout(() => window.URL.revokeObjectURL(blobUrl), 100);
                 
                 hideLoading();
-                showStatus('success', 'Force download berhasil! File sedang disimpan.');
+                showStatus('success', 'Blob download berhasil! File sedang disimpan.');
             } catch (error) {
                 hideLoading();
-                console.error('Force download error:', error);
-                showStatus('error', `Gagal force download: ${error.message}`);
+                showStatus('error', `Gagal blob download: ${error.message}`);
             }
         }
 
@@ -1116,26 +1159,26 @@
         // ========== PWA FUNCTIONALITY ==========
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            deferredPrompt = e;
+            window.deferredPrompt = e;
             
             setTimeout(() => {
-                if (deferredPrompt && !localStorage.getItem('installPromptDismissed')) {
+                if (window.deferredPrompt && !localStorage.getItem('installPromptDismissed')) {
                     elements.installPrompt.classList.remove('hidden');
                 }
             }, 3000);
         });
 
         elements.installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
+            if (window.deferredPrompt) {
+                window.deferredPrompt.prompt();
+                const { outcome } = await window.deferredPrompt.userChoice;
                 
                 if (outcome === 'accepted') {
                     elements.installPrompt.classList.add('hidden');
                     showStatus('success', 'Aplikasi berhasil diinstall!');
                 }
                 
-                deferredPrompt = null;
+                window.deferredPrompt = null;
             }
         });
 
@@ -1165,23 +1208,40 @@
         document.addEventListener('DOMContentLoaded', () => {
             elements.urlInput.focus();
             
-            // Add example URLs for quick testing
-            elements.urlInput.placeholder = "Contoh: https://www.tiktok.com/@tiktok/video/7106675948280556795";
+            // Add example URLs for testing
+            const examples = [
+                "https://www.tiktok.com/@tiktok/video/7106675948280556795",
+                "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                "https://www.instagram.com/reel/Cxample123/",
+                "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT"
+            ];
             
-            // Check if running as PWA
+            let exampleIndex = 0;
+            elements.urlInput.placeholder = examples[exampleIndex];
+            
+            // Cycle through examples every 5 seconds
+            setInterval(() => {
+                exampleIndex = (exampleIndex + 1) % examples.length;
+                elements.urlInput.placeholder = examples[exampleIndex];
+            }, 5000);
+            
+            // Test if running as PWA
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 console.log('Running as PWA');
             }
         });
 
-        // Test URLs for development
-        window.testURLs = {
-            tiktok: 'https://www.tiktok.com/@tiktok/video/7106675948280556795',
-            youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            instagram: 'https://www.instagram.com/p/Cxample123/',
-            spotify: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT',
-            facebook: 'https://www.facebook.com/watch/?v=123456789',
-            twitter: 'https://twitter.com/example/status/123456789'
+        // ========== TEST FUNCTION ==========
+        window.testDownload = function(platform) {
+            const testUrls = {
+                tiktok: 'https://www.tiktok.com/@tiktok/video/7106675948280556795',
+                youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                instagram: 'https://www.instagram.com/p/Cxample/',
+                spotify: 'https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT'
+            };
+            
+            elements.urlInput.value = testUrls[platform] || '';
+            processURL(testUrls[platform], platform);
         };
     </script>
 </body>
