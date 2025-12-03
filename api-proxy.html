@@ -1,0 +1,50 @@
+<!-- Simpan sebagai api-proxy.html untuk testing lokal -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Proxy Tester</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { padding: 10px; margin: 5px; }
+        #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2>API Proxy Tester untuk Multi Downloader</h2>
+    <input type="text" id="url" placeholder="Masukkan URL video" style="width: 400px;">
+    <button onclick="testAPI()">Test API</button>
+    <div id="result">Hasil akan muncul di sini...</div>
+    
+    <script>
+        async function testAPI() {
+            const url = document.getElementById('url').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                // Coba berbagai API
+                const apis = [
+                    { name: 'TikTok 1', url: `https://tikwm.com/api/?url=${encodeURIComponent(url)}` },
+                    { name: 'TikTok 2', url: `https://api.tiklydown.eu.org/api/download?url=${encodeURIComponent(url)}` },
+                    { name: 'YouTube', url: `https://corsproxy.io/?https://yt5s.com/api/ajaxSearch?q=${encodeURIComponent(url)}` }
+                ];
+                
+                for (let api of apis) {
+                    try {
+                        const response = await fetch(api.url);
+                        const data = await response.json();
+                        resultDiv.innerHTML = `<strong>${api.name} BERHASIL:</strong><br>${JSON.stringify(data, null, 2)}`;
+                        return;
+                    } catch (e) {
+                        console.log(`${api.name} gagal:`, e.message);
+                    }
+                }
+                
+                resultDiv.innerHTML = 'Semua API gagal. Coba URL lain.';
+            } catch (error) {
+                resultDiv.innerHTML = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
