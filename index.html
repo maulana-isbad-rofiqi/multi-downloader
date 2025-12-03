@@ -2,377 +2,1042 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Multi Downloader • Premium Tools</title>
-    <meta name="theme-color" content="#0f172a">
-    
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/7269/7269995.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Downloader - Download Video & Musik Gratis</title>
     <link rel="manifest" href="manifest.json">
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⬇️</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0f172a',
+                        'secondary': '#1e293b',
+                        'accent': '#3b82f6',
+                        'neon-blue': '#00d9ff',
+                        'neon-purple': '#9d4edd'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif'],
+                        'outfit': ['Outfit', 'sans-serif']
+                    },
+                    backdropBlur: {
+                        'glass': '12px',
+                    },
+                    boxShadow: {
+                        'neon': '0 0 10px theme(colors.neon-blue), 0 0 20px theme(colors.neon-blue)',
+                        'neon-purple': '0 0 10px theme(colors.neon-purple), 0 0 20px theme(colors.neon-purple)',
+                        'glow': '0 0 15px rgba(59, 130, 246, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Outfit', sans-serif; background-color: #0f172a; color: white; -webkit-tap-highlight-color: transparent; }
-        
-        /* Glassmorphism Panel */
-        .glass {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        /* Neon Glow Effect */
-        .neon-text {
-            text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        * {
+            font-family: 'Outfit', sans-serif;
         }
         
-        /* Loading Animation */
-        .loader-dots div {
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        body {
+            background-color: #0f172a;
+            background-image: 
+                radial-gradient(at 40% 20%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 80% 0%, rgba(156, 163, 175, 0.15) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, rgba(15, 23, 42, 0.3) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, rgba(30, 41, 59, 0.3) 0px, transparent 50%);
+            min-height: 100vh;
         }
-        .loader-dots div:nth-child(1) { left: 8px; animation: loader-dots1 0.6s infinite; }
-        .loader-dots div:nth-child(2) { left: 8px; animation: loader-dots2 0.6s infinite; }
-        .loader-dots div:nth-child(3) { left: 32px; animation: loader-dots2 0.6s infinite; }
-        .loader-dots div:nth-child(4) { left: 56px; animation: loader-dots3 0.6s infinite; }
-        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-        @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
-        @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
-
-        /* Hide Scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 1rem;
+        }
+        
+        .platform-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .platform-icon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .neon-btn {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .neon-btn:hover {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.7);
+            border-color: rgba(59, 130, 246, 0.8);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .thumbnail {
+            transition: transform 0.3s ease;
+        }
+        
+        .thumbnail:hover {
+            transform: scale(1.02);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden selection:bg-blue-500 selection:text-white">
-
-    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[100px] pointer-events-none"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[100px] pointer-events-none"></div>
-
-    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5">
-        <div class="max-w-3xl mx-auto px-5 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-2.5">
-                <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg shadow-lg shadow-blue-500/20">
-                    <i class="fa-solid fa-cloud-arrow-down text-white"></i>
+<body class="text-white">
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="glass-panel rounded-xl p-4 max-w-xs shadow-2xl border border-blue-500/30">
+            <div class="flex items-start">
+                <div class="mr-3 text-blue-400">
+                    <i class="fas fa-download text-xl"></i>
                 </div>
-                <span class="font-bold text-lg tracking-wide">Multi<span class="text-blue-400">Downloader</span></span>
+                <div class="flex-1">
+                    <h3 class="font-bold text-sm mb-1">Install Aplikasi</h3>
+                    <p class="text-xs text-gray-300 mb-2">Install Multi Downloader untuk akses cepat tanpa browser!</p>
+                    <div class="flex gap-2">
+                        <button id="installBtn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-medium transition">Install</button>
+                        <button id="dismissInstall" class="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-lg text-xs font-medium transition">Nanti</button>
+                    </div>
+                </div>
+                <button id="closeInstall" class="text-gray-400 hover:text-white ml-2">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <button onclick="toggleModal('aboutModal')" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition border border-slate-700">
-                <i class="fa-solid fa-bars text-slate-300"></i>
-            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-panel sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-xl shadow-glow">
+                        <i class="fas fa-cloud-download-alt text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Multi Downloader</h1>
+                        <p class="text-xs text-gray-400">Download video & musik gratis</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="aboutBtn" class="neon-btn px-4 py-2 rounded-lg font-medium">
+                        <i class="fas fa-info-circle mr-2"></i>Tentang
+                    </button>
+                    <button id="themeToggle" class="glass-panel p-2 rounded-lg">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <main class="relative z-10 container mx-auto px-4 mt-32 max-w-2xl pb-24">
-        
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold mb-3 text-white">
-                Download <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 neon-text">Apapun.</span>
-            </h1>
-            <p class="text-slate-400 text-sm">TikTok, YouTube, Spotify, IG & Lainnya. Tanpa Watermark.</p>
-        </div>
-
-        <div class="glass p-2 rounded-2xl mb-8 flex items-center shadow-2xl relative z-20 group focus-within:ring-2 focus-within:ring-blue-500/50 transition-all">
-            <div class="pl-4 pr-3 text-slate-500 group-focus-within:text-blue-400 transition">
-                <i id="inputIcon" class="fa-solid fa-link text-xl"></i>
-            </div>
-            <input type="text" id="urlInput" 
-                class="w-full bg-transparent border-none text-white px-2 py-3 focus:outline-none placeholder-slate-500"
-                placeholder="Tempel link di sini..."
-                autocomplete="off"
-                oninput="detectLink(this.value)">
-            <button onclick="processData()" id="btnAction" class="bg-blue-600 hover:bg-blue-500 text-white p-3.5 rounded-xl transition shadow-lg shadow-blue-600/30 active:scale-95">
-                <i class="fa-solid fa-download"></i>
-            </button>
-        </div>
-
-        <div id="statusInfo" class="hidden mb-6 flex justify-center">
-            <span class="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold flex items-center gap-2">
-                <i class="fa-solid fa-check-circle"></i> <span id="statusText">Platform Terdeteksi</span>
-            </span>
-        </div>
-
-        <div id="gridPlatform" class="grid grid-cols-4 sm:grid-cols-5 gap-3 mb-10">
-            </div>
-
-        <div id="resultBox" class="hidden glass rounded-2xl overflow-hidden shadow-2xl animate-[fadeIn_0.5s_ease-out]">
-            <div class="relative group w-full h-48 sm:h-64 bg-slate-800 overflow-hidden">
-                <img id="resThumb" src="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500" alt="Thumbnail">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                <div class="absolute bottom-0 left-0 p-4 w-full">
-                    <span id="resPlatform" class="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded uppercase tracking-wider mb-2 inline-block">TIKTOK</span>
-                    <h3 id="resTitle" class="text-white font-bold text-lg line-clamp-2 leading-tight">Title Video</h3>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="mb-12 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 font-poppins">Download Video & Musik <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Multi Platform</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto mb-8">Download konten dari TikTok, YouTube, Instagram, Spotify, Facebook, dan 10+ platform lainnya dengan mudah dan cepat!</p>
+            
+            <!-- URL Input -->
+            <div class="max-w-3xl mx-auto mb-8">
+                <div class="glass-panel rounded-2xl p-2 flex">
+                    <div class="flex-1">
+                        <input type="text" id="urlInput" placeholder="Tempel URL video/musik di sini (Auto Detect Platform)" class="w-full bg-transparent p-4 outline-none text-lg">
+                    </div>
+                    <button id="downloadBtn" class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-6 rounded-xl font-bold text-lg flex items-center pulse">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
                 </div>
+                <p class="text-sm text-gray-500 mt-3 text-left">Contoh: https://www.tiktok.com/@user/video/123456789 | https://youtube.com/watch?v=abc123 | https://open.spotify.com/track/xyz789</p>
             </div>
             
-            <div class="p-5 bg-slate-900/50 backdrop-blur-sm">
-                <div id="downloadList" class="space-y-3">
+            <!-- Platform Grid -->
+            <div class="glass-panel rounded-2xl p-6 mb-8">
+                <h3 class="text-2xl font-bold mb-6 text-center">Platform yang Didukung</h3>
+                <div class="icon-grid">
+                    <!-- TikTok -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="tiktok">
+                        <div class="text-3xl mb-2 text-pink-500">
+                            <i class="fab fa-tiktok"></i>
+                        </div>
+                        <p class="text-sm font-medium">TikTok</p>
                     </div>
-                <button onclick="closeResult()" class="mt-4 w-full py-3 text-slate-500 text-sm hover:text-white transition">Tutup / Reset</button>
+                    
+                    <!-- YouTube -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="youtube">
+                        <div class="text-3xl mb-2 text-red-600">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <p class="text-sm font-medium">YouTube</p>
+                    </div>
+                    
+                    <!-- Instagram -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="instagram">
+                        <div class="text-3xl mb-2 text-purple-600">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <p class="text-sm font-medium">Instagram</p>
+                    </div>
+                    
+                    <!-- Spotify -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="spotify">
+                        <div class="text-3xl mb-2 text-green-500">
+                            <i class="fab fa-spotify"></i>
+                        </div>
+                        <p class="text-sm font-medium">Spotify</p>
+                    </div>
+                    
+                    <!-- Facebook -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="facebook">
+                        <div class="text-3xl mb-2 text-blue-600">
+                            <i class="fab fa-facebook"></i>
+                        </div>
+                        <p class="text-sm font-medium">Facebook</p>
+                    </div>
+                    
+                    <!-- Twitter -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="twitter">
+                        <div class="text-3xl mb-2 text-blue-400">
+                            <i class="fab fa-twitter"></i>
+                        </div>
+                        <p class="text-sm font-medium">Twitter/X</p>
+                    </div>
+                    
+                    <!-- Pinterest -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="pinterest">
+                        <div class="text-3xl mb-2 text-red-500">
+                            <i class="fab fa-pinterest"></i>
+                        </div>
+                        <p class="text-sm font-medium">Pinterest</p>
+                    </div>
+                    
+                    <!-- SoundCloud -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="soundcloud">
+                        <div class="text-3xl mb-2 text-orange-500">
+                            <i class="fab fa-soundcloud"></i>
+                        </div>
+                        <p class="text-sm font-medium">SoundCloud</p>
+                    </div>
+                    
+                    <!-- Google Drive -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="gdrive">
+                        <div class="text-3xl mb-2 text-green-600">
+                            <i class="fab fa-google-drive"></i>
+                        </div>
+                        <p class="text-sm font-medium">Google Drive</p>
+                    </div>
+                    
+                    <!-- Mediafire -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="mediafire">
+                        <div class="text-3xl mb-2 text-yellow-600">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <p class="text-sm font-medium">Mediafire</p>
+                    </div>
+                    
+                    <!-- Apple Music -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="applemusic">
+                        <div class="text-3xl mb-2 text-pink-600">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <p class="text-sm font-medium">Apple Music</p>
+                    </div>
+                    
+                    <!-- RedNote -->
+                    <div class="platform-icon glass-panel rounded-xl p-4 text-center cursor-pointer" data-platform="rednote">
+                        <div class="text-3xl mb-2 text-red-400">
+                            <i class="fas fa-sticky-note"></i>
+                        </div>
+                        <p class="text-sm font-medium">RedNote</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preview Section -->
+        <section id="previewSection" class="hidden mb-12 fade-in">
+            <div class="glass-panel rounded-2xl p-6">
+                <h3 class="text-2xl font-bold mb-6">Preview</h3>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <!-- Thumbnail -->
+                    <div class="md:w-1/3">
+                        <div class="rounded-xl overflow-hidden thumbnail">
+                            <img id="previewThumbnail" src="" alt="Thumbnail" class="w-full h-64 object-cover">
+                        </div>
+                        <div class="mt-4 text-center">
+                            <p id="platformBadge" class="inline-block px-3 py-1 rounded-full text-sm font-medium bg-blue-900/30 text-blue-400"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Details -->
+                    <div class="md:w-2/3">
+                        <h4 id="previewTitle" class="text-2xl font-bold mb-4"></h4>
+                        <p id="previewDescription" class="text-gray-400 mb-6"></p>
+                        
+                        <!-- Download Options -->
+                        <div class="mb-6">
+                            <h5 class="text-lg font-bold mb-4">Pilih Format Download:</h5>
+                            <div id="downloadOptions" class="flex flex-wrap gap-4">
+                                <!-- Options will be dynamically added here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Force Download Button (for CORS issues) -->
+                        <div id="forceDownloadSection" class="hidden">
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2 mb-4">
+                                <p class="text-yellow-400 font-medium"><i class="fas fa-exclamation-triangle mr-2"></i>Jika download tidak berhasil, coba:</p>
+                            </div>
+                            <button id="forceDownloadBtn" class="neon-btn px-6 py-3 rounded-lg font-bold flex items-center">
+                                <i class="fas fa-bolt mr-2"></i> Force Download (Blob Method)
+                            </button>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div id="statusMessage" class="mt-6"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+            <div class="glass-panel rounded-2xl p-8 flex flex-col items-center">
+                <div class="loader mb-4"></div>
+                <p class="text-xl font-bold">Memproses...</p>
+                <p id="loadingDetail" class="text-gray-400 mt-2 text-center">Mengambil informasi dari platform</p>
             </div>
         </div>
 
-        <div id="loader" class="hidden flex flex-col items-center py-10">
-            <div class="loader-dots relative w-20 h-5"><div></div><div></div><div></div><div></div></div>
-            <p class="text-slate-400 text-xs mt-4 animate-pulse">Sedang memproses data...</p>
+        <!-- About Modal -->
+        <div id="aboutModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <div class="glass-panel rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold">Tentang Multi Downloader</h3>
+                    <button id="closeAbout" class="text-gray-400 hover:text-white text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-xl font-bold mb-3">Fitur Utama</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Download video dan audio dari 15+ platform populer</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Auto-detect platform dari URL yang ditempel</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Preview thumbnail dan informasi sebelum download</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Pilihan format MP3 dan MP4</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Force download untuk mengatasi masalah CORS</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-green-500 mr-3 mt-1"></i>
+                                <span>Dapat diinstall sebagai PWA (Progressive Web App)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold mb-3">Cara Menggunakan</h4>
+                        <ol class="space-y-3 text-gray-300 list-decimal pl-5">
+                            <li>Salin URL video/musik dari platform yang didukung</li>
+                            <li>Tempel URL pada input field di halaman utama</li>
+                            <li>Klik tombol "Download" atau pilih platform manual</li>
+                            <li>Pilih format yang diinginkan (MP3/MP4)</li>
+                            <li>Klik tombol download untuk mendapatkan file</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="border-t border-gray-700 pt-6">
+                        <h4 class="text-xl font-bold mb-3">Credit</h4>
+                        <div class="glass-panel rounded-xl p-6">
+                            <div class="flex items-center">
+                                <div class="mr-4 text-4xl text-blue-400">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div>
+                                    <p class="text-lg font-bold">Multi Downloader</p>
+                                    <p class="text-gray-400">Dikembangkan dengan ❤️ menggunakan API publik</p>
+                                    <p class="mt-3 font-bold text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">by 【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center pt-4">
+                        <button id="closeAboutBtn" class="neon-btn px-6 py-3 rounded-lg font-bold">Tutup</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </main>
 
-    <div id="toast" class="fixed top-5 left-1/2 transform -translate-x-1/2 -translate-y-20 transition-all duration-300 z-[100] px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 glass border-t border-white/20">
-        <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
-        <span id="toastMsg" class="text-sm font-semibold text-white">Berhasil</span>
-    </div>
-
-    <div id="aboutModal" class="fixed inset-0 z-[100] hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="glass bg-slate-900 p-8 rounded-3xl max-w-sm w-full text-center relative border border-slate-700">
-            <button onclick="toggleModal('aboutModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-20 h-20 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl text-white font-bold shadow-lg shadow-blue-500/30">IB</div>
-            <h3 class="text-xl font-bold text-white mb-1">Multi Downloader</h3>
-            <p class="text-xs text-slate-500 mb-6">Versi Pro 3.5</p>
-            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Developer</p>
-                <p class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 tracking-wider">【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
+    <!-- Footer -->
+    <footer class="glass-panel mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-xl">
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold">Multi Downloader</h2>
+                            <p class="text-gray-400 text-sm">Download video & musik multi platform</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm mb-2">© 2023 Multi Downloader. Semua hak dilindungi.</p>
+                    <p class="font-bold text-lg bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">by 【﻿ 𝕀𝕥𝕤𝕓𝕒𝕕 】</p>
+                    <p class="text-gray-500 text-xs mt-2">Gunakan dengan bijak dan hormati hak cipta</p>
+                </div>
             </div>
         </div>
-    </div>
+    </footer>
 
     <script>
-        const apiBase = "https://api.ootaizumi.web.id/downloader/";
-        
-        // DATABASE API LENGKAP
-        const platforms = {
-            tiktok: { name: "TikTok", icon: "fa-brands fa-tiktok", color: "text-pink-500", match: ["tiktok.com"], apis: [{end:"tiktok",p:"url"},{end:"ssstiktok",p:"url"},{end:"snaptik",p:"url"}] },
-            youtube: { name: "YouTube", icon: "fa-brands fa-youtube", color: "text-red-500", match: ["youtube.com","youtu.be"], apis: [{end:"youtube",p:"url",x:"&format=mp4"},{end:"youtubev2",p:"url"},{end:"youtube-play",p:"query"}] },
-            spotify: { name: "Spotify", icon: "fa-brands fa-spotify", color: "text-green-500", match: ["spotify.com"], apis: [{end:"spotify-v2",p:"url"},{end:"spotify",p:"url"}] },
-            instagram: { name: "Instagram", icon: "fa-brands fa-instagram", color: "text-purple-500", match: ["instagram.com"], apis: [{end:"instagram",p:"url"}] },
-            facebook: { name: "Facebook", icon: "fa-brands fa-facebook", color: "text-blue-600", match: ["facebook.com","fb.watch"], apis: [{end:"facebook",p:"url"}] },
-            twitter: { name: "Twitter", icon: "fa-brands fa-x-twitter", color: "text-slate-300", match: ["twitter.com","x.com"], apis: [{end:"twitter",p:"url"}] },
-            pinterest: { name: "Pinterest", icon: "fa-brands fa-pinterest", color: "text-red-600", match: ["pinterest.com","pin.it"], apis: [{end:"pinterest",p:"url"}] },
-            soundcloud: { name: "SoundCloud", icon: "fa-brands fa-soundcloud", color: "text-orange-500", match: ["soundcloud.com"], apis: [{end:"soundcloud",p:"url"}] },
-            rednote: { name: "RedNote", icon: "fa-solid fa-book", color: "text-red-400", match: ["xiaohongshu.com"], apis: [{end:"rednote",p:"url"}] },
-            telegram: { name: "Tele Sticker", icon: "fa-brands fa-telegram", color: "text-blue-400", match: ["t.me"], apis: [{end:"telegram-sticker",p:"url"}] },
-            gdrive: { name: "G-Drive", icon: "fa-brands fa-google-drive", color: "text-green-400", match: ["drive.google.com"], apis: [{end:"gdrive",p:"url"}] },
-            mediafire: { name: "Mediafire", icon: "fa-solid fa-fire", color: "text-blue-400", match: ["mediafire.com"], apis: [{end:"mediafire",p:"url"}] },
-            sfile: { name: "Sfile", icon: "fa-solid fa-folder", color: "text-blue-500", match: ["sfile.mobi"], apis: [{end:"sfile",p:"url"}] },
-            // Manual Only
-            ytsearch: { name: "Cari Lagu", icon: "fa-solid fa-search", color: "text-yellow-400", isSearch: true, apis: [{end:"youtube-play",p:"query"}] }
+        // DOM Elements
+        const urlInput = document.getElementById('urlInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const previewSection = document.getElementById('previewSection');
+        const previewThumbnail = document.getElementById('previewThumbnail');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewDescription = document.getElementById('previewDescription');
+        const platformBadge = document.getElementById('platformBadge');
+        const downloadOptions = document.getElementById('downloadOptions');
+        const forceDownloadSection = document.getElementById('forceDownloadSection');
+        const forceDownloadBtn = document.getElementById('forceDownloadBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loadingDetail = document.getElementById('loadingDetail');
+        const aboutBtn = document.getElementById('aboutBtn');
+        const aboutModal = document.getElementById('aboutModal');
+        const closeAbout = document.getElementById('closeAbout');
+        const closeAboutBtn = document.getElementById('closeAboutBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const dismissInstall = document.getElementById('dismissInstall');
+        const closeInstall = document.getElementById('closeInstall');
+        const platformIcons = document.querySelectorAll('.platform-icon');
+
+        // Global variables
+        let currentPlatform = '';
+        let currentData = null;
+        let deferredPrompt = null;
+        let apiEndpoints = {
+            // TikTok APIs
+            tiktok: [
+                'https://api.ootaizumi.web.id/downloader/tiktok?url=',
+                'https://api.ootaizumi.web.id/downloader/ssstiktok?url=',
+                'https://api.ootaizumi.web.id/downloader/snaptik?url='
+            ],
+            // YouTube APIs
+            youtube: [
+                'https://api.ootaizumi.web.id/downloader/youtube?url=',
+                'https://api.ootaizumi.web.id/downloader/youtubev2?url=',
+                'https://api.ootaizumi.web.id/downloader/youtube-play?query='
+            ],
+            // Spotify APIs
+            spotify: [
+                'https://api.ootaizumi.web.id/downloader/spotify-v2?url=',
+                'https://api.ootaizumi.web.id/downloader/spotify?url=',
+                'https://api.ootaizumi.web.id/downloader/spotifyplay?query='
+            ],
+            // Instagram API
+            instagram: [
+                'https://api.ootaizumi.web.id/downloader/instagram?url='
+            ],
+            // Facebook API
+            facebook: [
+                'https://api.ootaizumi.web.id/downloader/facebook?url='
+            ],
+            // Twitter API
+            twitter: [
+                'https://api.ootaizumi.web.id/downloader/twitter?url='
+            ],
+            // Pinterest API
+            pinterest: [
+                'https://api.ootaizumi.web.id/downloader/pinterest?url='
+            ],
+            // Telegram Sticker API
+            telegram: [
+                'https://api.ootaizumi.web.id/downloader/telegram-sticker?url='
+            ],
+            // RedNote API
+            rednote: [
+                'https://api.ootaizumi.web.id/downloader/rednote?url='
+            ],
+            // Google Drive API
+            gdrive: [
+                'https://api.ootaizumi.web.id/downloader/gdrive?url='
+            ],
+            // Mediafire API
+            mediafire: [
+                'https://api.ootaizumi.web.id/downloader/mediafire?url='
+            ],
+            // Sfile.mobi API
+            sfile: [
+                'https://api.ootaizumi.web.id/downloader/sfile?url='
+            ],
+            // Scribd API
+            scribd: [
+                'https://api.ootaizumi.web.id/downloader/scribd?url='
+            ],
+            // SoundCloud API
+            soundcloud: [
+                'https://api.ootaizumi.web.id/downloader/soundcloud?url='
+            ],
+            // Apple Music API
+            applemusic: [
+                'https://api.ootaizumi.web.id/downloader/applemusic?url='
+            ],
+            // NCS Music API
+            ncs: [
+                'https://api.ootaizumi.web.id/downloader/ncs?tid='
+            ]
         };
 
-        let currentMode = 'auto';
+        // Platform detection patterns
+        const platformPatterns = {
+            tiktok: /tiktok\.com|vt\.tiktok\.com|vm\.tiktok\.com/,
+            youtube: /youtube\.com|youtu\.be/,
+            instagram: /instagram\.com/,
+            spotify: /spotify\.com/,
+            facebook: /facebook\.com|fb\.watch/,
+            twitter: /twitter\.com|x\.com/,
+            pinterest: /pinterest\.com/,
+            telegram: /telegram\.org|t\.me/,
+            rednote: /xiaohongshu\.com/,
+            gdrive: /drive\.google\.com/,
+            mediafire: /mediafire\.com/,
+            sfile: /sfile\.mobi/,
+            scribd: /scribd\.com/,
+            soundcloud: /soundcloud\.com/,
+            applemusic: /music\.apple\.com/
+        };
 
-        // Init Grid
-        const grid = document.getElementById('gridPlatform');
-        Object.keys(platforms).forEach(k => {
-            const p = platforms[k];
-            // Tampilkan sebagian saja agar rapi
-            if(['tiktok','youtube','spotify','instagram','facebook','twitter','ytsearch'].includes(k)) {
-                const btn = document.createElement('div');
-                btn.className = "flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition active:scale-95";
-                btn.onclick = () => setManual(k);
-                btn.innerHTML = `
-                    <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center shadow-lg border border-slate-700">
-                        <i class="${p.icon} ${p.color} text-lg"></i>
-                    </div>
-                    <span class="text-[10px] text-slate-400 font-medium">${p.name}</span>
-                `;
-                grid.appendChild(btn);
+        // Platform names for display
+        const platformNames = {
+            tiktok: 'TikTok',
+            youtube: 'YouTube',
+            instagram: 'Instagram',
+            spotify: 'Spotify',
+            facebook: 'Facebook',
+            twitter: 'Twitter/X',
+            pinterest: 'Pinterest',
+            telegram: 'Telegram',
+            rednote: 'RedNote (Xiaohongshu)',
+            gdrive: 'Google Drive',
+            mediafire: 'Mediafire',
+            sfile: 'Sfile.mobi',
+            scribd: 'Scribd',
+            soundcloud: 'SoundCloud',
+            applemusic: 'Apple Music',
+            ncs: 'NCS Music'
+        };
+
+        // Platform colors for badges
+        const platformColors = {
+            tiktok: 'bg-pink-900/30 text-pink-400',
+            youtube: 'bg-red-900/30 text-red-400',
+            instagram: 'bg-purple-900/30 text-purple-400',
+            spotify: 'bg-green-900/30 text-green-400',
+            facebook: 'bg-blue-900/30 text-blue-400',
+            twitter: 'bg-sky-900/30 text-sky-400',
+            pinterest: 'bg-red-900/30 text-red-400',
+            telegram: 'bg-blue-900/30 text-blue-400',
+            rednote: 'bg-red-900/30 text-red-400',
+            gdrive: 'bg-green-900/30 text-green-400',
+            mediafire: 'bg-yellow-900/30 text-yellow-400',
+            sfile: 'bg-indigo-900/30 text-indigo-400',
+            scribd: 'bg-orange-900/30 text-orange-400',
+            soundcloud: 'bg-orange-900/30 text-orange-400',
+            applemusic: 'bg-pink-900/30 text-pink-400',
+            ncs: 'bg-blue-900/30 text-blue-400'
+        };
+
+        // Detect platform from URL
+        function detectPlatform(url) {
+            for (const platform in platformPatterns) {
+                if (platformPatterns[platform].test(url)) {
+                    return platform;
+                }
+            }
+            return null;
+        }
+
+        // Show loading indicator
+        function showLoading(message = 'Memproses...') {
+            loadingDetail.textContent = message;
+            loadingIndicator.classList.remove('hidden');
+        }
+
+        // Hide loading indicator
+        function hideLoading() {
+            loadingIndicator.classList.add('hidden');
+        }
+
+        // Show status message
+        function showStatus(type, message) {
+            let icon = '';
+            let bgColor = '';
+            
+            switch(type) {
+                case 'success':
+                    icon = 'fa-check-circle';
+                    bgColor = 'bg-green-900/30 text-green-400 border-green-800';
+                    break;
+                case 'error':
+                    icon = 'fa-exclamation-circle';
+                    bgColor = 'bg-red-900/30 text-red-400 border-red-800';
+                    break;
+                case 'warning':
+                    icon = 'fa-exclamation-triangle';
+                    bgColor = 'bg-yellow-900/30 text-yellow-400 border-yellow-800';
+                    break;
+                case 'info':
+                    icon = 'fa-info-circle';
+                    bgColor = 'bg-blue-900/30 text-blue-400 border-blue-800';
+                    break;
+            }
+            
+            statusMessage.innerHTML = `
+                <div class="${bgColor} border rounded-xl p-4 flex items-start">
+                    <i class="fas ${icon} mr-3 mt-1"></i>
+                    <div>${message}</div>
+                </div>
+            `;
+        }
+
+        // Clear status message
+        function clearStatus() {
+            statusMessage.innerHTML = '';
+        }
+
+        // Show preview section
+        function showPreview(data, platform) {
+            currentData = data;
+            currentPlatform = platform;
+            
+            // Set thumbnail
+            if (data.thumbnail) {
+                previewThumbnail.src = data.thumbnail;
+            } else {
+                previewThumbnail.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="225" viewBox="0 0 400 225"><rect width="400" height="225" fill="%231e293b"/><text x="200" y="120" font-family="Arial" font-size="24" fill="%234b5563" text-anchor="middle">No thumbnail</text></svg>';
+            }
+            
+            // Set title
+            previewTitle.textContent = data.title || 'Judul tidak tersedia';
+            
+            // Set description
+            previewDescription.textContent = data.description || 'Deskripsi tidak tersedia';
+            
+            // Set platform badge
+            platformBadge.textContent = platformNames[platform] || platform;
+            platformBadge.className = `inline-block px-3 py-1 rounded-full text-sm font-medium ${platformColors[platform] || 'bg-gray-800 text-gray-400'}`;
+            
+            // Clear download options
+            downloadOptions.innerHTML = '';
+            
+            // Add download options based on available data
+            if (data.video_url || data.url) {
+                const videoUrl = data.video_url || data.url;
+                
+                // MP4 option
+                const mp4Option = document.createElement('button');
+                mp4Option.className = 'neon-btn px-6 py-3 rounded-lg font-bold flex items-center';
+                mp4Option.innerHTML = '<i class="fas fa-file-video mr-2"></i> Download MP4';
+                mp4Option.onclick = () => downloadFile(videoUrl, `${data.title || 'video'}.mp4`);
+                downloadOptions.appendChild(mp4Option);
+            }
+            
+            if (data.audio_url || data.audio) {
+                const audioUrl = data.audio_url || data.audio;
+                
+                // MP3 option
+                const mp3Option = document.createElement('button');
+                mp3Option.className = 'neon-btn px-6 py-3 rounded-lg font-bold flex items-center';
+                mp3Option.innerHTML = '<i class="fas fa-file-audio mr-2"></i> Download MP3';
+                mp3Option.onclick = () => downloadFile(audioUrl, `${data.title || 'audio'}.mp3`);
+                downloadOptions.appendChild(mp3Option);
+            }
+            
+            // If no specific options, try to create from available URLs
+            if (downloadOptions.children.length === 0 && data.download_url) {
+                const genericOption = document.createElement('button');
+                genericOption.className = 'neon-btn px-6 py-3 rounded-lg font-bold flex items-center';
+                genericOption.innerHTML = '<i class="fas fa-download mr-2"></i> Download File';
+                genericOption.onclick = () => downloadFile(data.download_url, `${data.title || 'file'}`);
+                downloadOptions.appendChild(genericOption);
+            }
+            
+            // Show preview section
+            previewSection.classList.remove('hidden');
+            previewSection.classList.add('fade-in');
+            
+            // Scroll to preview
+            previewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Download file directly
+        function downloadFile(url, filename) {
+            if (!url) {
+                showStatus('error', 'URL download tidak tersedia.');
+                return;
+            }
+            
+            showStatus('info', 'Mempersiapkan download...');
+            
+            // Try direct download first
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            // Show force download option in case of CORS issues
+            forceDownloadSection.classList.remove('hidden');
+            forceDownloadBtn.onclick = () => forceDownload(url, filename);
+            
+            showStatus('success', 'Download telah dimulai. Jika tidak berhasil, gunakan tombol Force Download.');
+        }
+
+        // Force download using blob (for CORS issues)
+        async function forceDownload(url, filename) {
+            showLoading('Menggunakan metode Force Download...');
+            
+            try {
+                const response = await fetch(url, { mode: 'cors' });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // Clean up
+                window.URL.revokeObjectURL(blobUrl);
+                
+                hideLoading();
+                showStatus('success', 'Force download berhasil! File sedang disimpan.');
+            } catch (error) {
+                hideLoading();
+                console.error('Force download error:', error);
+                showStatus('error', `Gagal force download: ${error.message}`);
+            }
+        }
+
+        // Process URL with API
+        async function processURL(url, platform = null) {
+            if (!url.trim()) {
+                showStatus('error', 'Masukkan URL terlebih dahulu.');
+                return;
+            }
+            
+            // Detect platform if not specified
+            if (!platform) {
+                platform = detectPlatform(url);
+                if (!platform) {
+                    showStatus('error', 'Platform tidak dikenali. Pastikan URL valid atau pilih platform manual.');
+                    return;
+                }
+            }
+            
+            showLoading(`Mengambil data dari ${platformNames[platform] || platform}...`);
+            clearStatus();
+            
+            // Get API endpoints for the platform
+            const endpoints = apiEndpoints[platform];
+            if (!endpoints || endpoints.length === 0) {
+                hideLoading();
+                showStatus('error', `API untuk platform ${platform} tidak tersedia.`);
+                return;
+            }
+            
+            let success = false;
+            let result = null;
+            
+            // Try each endpoint until one works
+            for (let i = 0; i < endpoints.length; i++) {
+                const endpoint = endpoints[i];
+                let apiUrl = '';
+                
+                // Handle special cases
+                if (platform === 'youtube' && i === 0) {
+                    // YouTube main API needs &format=mp4
+                    apiUrl = endpoint + encodeURIComponent(url) + '&format=mp4';
+                } else if ((platform === 'youtube' && i === 2) || (platform === 'spotify' && i === 2)) {
+                    // Search APIs need query parameter
+                    // Extract title or use URL as query
+                    const query = url.split('/').pop() || encodeURIComponent(url);
+                    apiUrl = endpoint + encodeURIComponent(query);
+                } else {
+                    // Standard API call
+                    apiUrl = endpoint + encodeURIComponent(url);
+                }
+                
+                loadingDetail.textContent = `Mencoba API ${i+1}/${endpoints.length}...`;
+                
+                try {
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'Accept': 'application/json',
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Check if API returned valid data
+                        if (data && (data.status === 'success' || data.video_url || data.audio_url || data.url)) {
+                            result = data;
+                            success = true;
+                            break;
+                        }
+                    }
+                } catch (error) {
+                    console.warn(`API ${i+1} gagal:`, error);
+                    // Continue to next API
+                }
+            }
+            
+            hideLoading();
+            
+            if (success) {
+                showPreview(result, platform);
+                showStatus('success', `Berhasil mengambil data dari ${platformNames[platform] || platform}.`);
+            } else {
+                showStatus('error', `Gagal mengambil data. Coba lagi nanti atau gunakan platform lain.`);
+            }
+        }
+
+        // Event Listeners
+        downloadBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            processURL(url);
+        });
+
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const url = urlInput.value.trim();
+                processURL(url);
             }
         });
 
-        function detectLink(val) {
-            if(!val) return resetUI();
-            
-            let found = false;
-            for(const [k, d] of Object.entries(platforms)) {
-                if(d.match && d.match.some(domain => val.includes(domain))) {
-                    currentMode = k;
-                    document.getElementById('inputIcon').className = `${d.icon} ${d.color} text-xl`;
-                    document.getElementById('statusText').innerText = d.name;
-                    document.getElementById('statusInfo').classList.remove('hidden');
-                    found = true;
-                    break;
+        // Platform icon clicks
+        platformIcons.forEach(icon => {
+            icon.addEventListener('click', () => {
+                const platform = icon.getAttribute('data-platform');
+                const url = urlInput.value.trim();
+                
+                if (url) {
+                    processURL(url, platform);
+                } else {
+                    urlInput.focus();
+                    showStatus('info', `Pilih platform ${platformNames[platform] || platform}, lalu tempel URL.`);
                 }
-            }
-            if(!found && currentMode === 'auto') {
-                document.getElementById('inputIcon').className = "fa-solid fa-link text-xl text-slate-500";
-                document.getElementById('statusInfo').classList.add('hidden');
-            }
-        }
+            });
+        });
 
-        function setManual(key) {
-            currentMode = key;
-            const p = platforms[key];
-            const input = document.getElementById('urlInput');
-            
-            document.getElementById('inputIcon').className = `${p.icon} ${p.color} text-xl`;
-            document.getElementById('statusText').innerText = `Mode: ${p.name}`;
-            document.getElementById('statusInfo').classList.remove('hidden');
-            
-            input.placeholder = p.isSearch ? "Ketik judul lagu..." : `Link ${p.name}...`;
-            input.value = '';
-            input.focus();
-            showToast('Mode diubah ke ' + p.name, 'success');
-        }
+        // About modal
+        aboutBtn.addEventListener('click', () => {
+            aboutModal.classList.remove('hidden');
+        });
 
-        function resetUI() {
-            currentMode = 'auto';
-            document.getElementById('inputIcon').className = "fa-solid fa-link text-xl text-slate-500";
-            document.getElementById('statusInfo').classList.add('hidden');
-        }
+        closeAbout.addEventListener('click', () => {
+            aboutModal.classList.add('hidden');
+        });
 
-        async function processData() {
-            const input = document.getElementById('urlInput').value.trim();
-            if(!input) return showToast('Link kosong!', 'error');
+        closeAboutBtn.addEventListener('click', () => {
+            aboutModal.classList.add('hidden');
+        });
 
-            if(currentMode === 'auto' && !input.startsWith('http')) {
-                return showToast('Link tidak valid atau gunakan fitur Cari Lagu', 'error');
-            }
-
-            // UI Loading
-            document.getElementById('resultBox').classList.add('hidden');
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('btnAction').disabled = true;
-
-            const conf = platforms[currentMode];
-            let success = false;
-
-            // Loop API (Fallback)
-            for(let i=0; i<conf.apis.length; i++) {
-                try {
-                    const api = conf.apis[i];
-                    let url = `${apiBase}${api.end}?${api.p}=${encodeURIComponent(input)}${api.x || ''}`;
-                    
-                    const res = await fetch(url);
-                    const json = await res.json();
-                    
-                    if(json && (json.url || json.result || json.data)) {
-                        renderResult(json);
-                        success = true;
-                        break;
-                    }
-                } catch(e) { console.log('API '+i+' Fail'); }
-            }
-
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('btnAction').disabled = false;
-            
-            if(!success) showToast('Gagal mengambil data. Coba lagi.', 'error');
-        }
-
-        function renderResult(data) {
-            const d = Array.isArray(data.result) ? data.result[0] : (data.result || data.data || data);
-            
-            // Set Metadata
-            document.getElementById('resThumb').src = d.thumbnail || d.cover || d.image || 'https://via.placeholder.com/300?text=No+Cover';
-            document.getElementById('resTitle').innerText = d.title || d.caption || d.name || 'Media Found';
-            document.getElementById('resPlatform').innerText = platforms[currentMode].name;
-
-            const list = document.getElementById('downloadList');
-            list.innerHTML = '';
-
-            // --- TOMBOL DOWNLOAD BUILDER ---
-            const createBtn = (url, label, type) => {
-                const isVid = type === 'video';
-                const icon = isVid ? 'fa-video' : (type === 'audio' ? 'fa-music' : 'fa-file-arrow-down');
-                
-                const div = document.createElement('div');
-                div.className = "flex gap-2";
-                
-                // FORCE DOWNLOAD BUTTON
-                const dlBtn = document.createElement('button');
-                dlBtn.className = "flex-grow bg-blue-600 hover:bg-blue-500 text-white py-3 px-4 rounded-xl flex items-center justify-between transition shadow-lg active:scale-95";
-                dlBtn.innerHTML = `<span class="flex items-center gap-2 font-semibold text-sm"><i class="fa-solid ${icon}"></i> ${label}</span> <i class="fa-solid fa-download opacity-70"></i>`;
-                
-                // Event Listener untuk Force Download
-                dlBtn.onclick = () => forceDownload(url, `Download_${Date.now()}.${isVid?'mp4':'mp3'}`);
-                
-                div.appendChild(dlBtn);
-                list.appendChild(div);
-            };
-
-            // Logic Extract URL
-            if(d.download && d.download.url) createBtn(d.download.url, 'Download MP3', 'audio');
-            else if(d.url) createBtn(d.url, 'Download File', 'download');
-            
-            if(d.video) createBtn(d.video, 'Download Video', 'video');
-            if(d.audio) createBtn(d.audio, 'Download Audio', 'audio');
-
-            if(Array.isArray(data.result) && data.result.length > 1) {
-                data.result.forEach((x, i) => {
-                   if(typeof x === 'string') createBtn(x, `Slide ${i+1}`, 'video');
-                   else if(x.url) createBtn(x.url, `Item ${i+1}`, 'download');
+        // Theme toggle (simple dark/light toggle)
+        themeToggle.addEventListener('click', () => {
+            const icon = themeToggle.querySelector('i');
+            if (icon.classList.contains('fa-moon')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                document.body.classList.add('bg-gray-100');
+                document.body.classList.remove('bg-primary');
+                // Change text colors for light mode
+                document.querySelectorAll('.text-white').forEach(el => {
+                    el.classList.add('text-gray-900');
+                    el.classList.remove('text-white');
+                });
+                document.querySelectorAll('.text-gray-400').forEach(el => {
+                    el.classList.add('text-gray-600');
+                    el.classList.remove('text-gray-400');
+                });
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                document.body.classList.remove('bg-gray-100');
+                document.body.classList.add('bg-primary');
+                // Revert to dark mode
+                document.querySelectorAll('.text-gray-900').forEach(el => {
+                    el.classList.remove('text-gray-900');
+                    el.classList.add('text-white');
+                });
+                document.querySelectorAll('.text-gray-600').forEach(el => {
+                    el.classList.remove('text-gray-600');
+                    el.classList.add('text-gray-400');
                 });
             }
+        });
 
-            document.getElementById('resultBox').classList.remove('hidden');
-        }
-
-        // --- FUNGSI UTAMA: FORCE DOWNLOAD ---
-        async function forceDownload(url, filename) {
-            showToast('Sedang mengunduh...', 'process');
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
             
-            try {
-                // Metode 1: Fetch Blob (Paling Ampuh tapi butuh CORS)
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Network fail');
+            // Show install prompt after a delay
+            setTimeout(() => {
+                if (deferredPrompt && !localStorage.getItem('installPromptDismissed')) {
+                    installPrompt.classList.remove('hidden');
+                }
+            }, 3000);
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
                 
-                const blob = await response.blob();
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(link.href);
+                if (outcome === 'accepted') {
+                    installPrompt.classList.add('hidden');
+                }
                 
-                showToast('Disimpan ke Galeri!', 'success');
-                
-            } catch (error) {
-                // Metode 2: Fallback (Jika server memblokir fetch)
-                console.warn("Fetch failed, trying fallback", error);
-                
-                const link = document.createElement("a");
-                link.href = url;
-                link.target = "_blank";
-                link.download = filename; // Browser mungkin mengabaikan ini jika cross-origin
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                showToast('Membuka file (Manual Save)', 'error');
+                deferredPrompt = null;
             }
+        });
+
+        dismissInstall.addEventListener('click', () => {
+            installPrompt.classList.add('hidden');
+            localStorage.setItem('installPromptDismissed', 'true');
+        });
+
+        closeInstall.addEventListener('click', () => {
+            installPrompt.classList.add('hidden');
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered: ', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
         }
 
-        // Utils
-        function showToast(msg, type) {
-            const t = document.getElementById('toast');
-            const icon = document.getElementById('toastIcon');
-            
-            document.getElementById('toastMsg').innerText = msg;
-            
-            if(type === 'error') {
-                t.classList.replace('border-white/20', 'border-red-500');
-                icon.className = 'fa-solid fa-circle-xmark text-red-500';
-            } else if(type === 'process') {
-                 icon.className = 'fa-solid fa-spinner fa-spin text-blue-400';
-            } else {
-                t.classList.replace('border-red-500', 'border-white/20');
-                icon.className = 'fa-solid fa-circle-check text-green-400';
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('Running in standalone mode');
             }
             
-            t.classList.remove('-translate-y-20');
-            setTimeout(() => t.classList.add('-translate-y-20'), 3000);
-        }
-        
-        function closeResult() { document.getElementById('resultBox').classList.add('hidden'); }
-        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
-        
-        // PWA Reg
-        if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+            // Auto-focus URL input
+            urlInput.focus();
+            
+            // Example URLs for testing
+            urlInput.placeholder = "Tempel URL video/musik di sini (Auto Detect Platform)";
+        });
     </script>
 </body>
 </html>
