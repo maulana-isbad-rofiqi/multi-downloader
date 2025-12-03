@@ -1,7 +1,7 @@
 {
-  "name": "Multi Downloader PRO",
-  "short_name": "MDownloader PRO",
-  "description": "Premium video & music downloader for TikTok, YouTube, Instagram, Spotify",
+  "name": "Multi Downloader",
+  "short_name": "MDownloader",
+  "description": "Download video & musik dari TikTok, YouTube, Instagram, Spotify",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -11,39 +11,7 @@
     {
       "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%233b82f6%22>⬇️</text></svg>",
       "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect width=%22192%22 height=%22192%22 fill=%22%233b82f6%22 rx=%2248%22/><path d=%22M96 56v80m-32-40h64%22 stroke=%22white%22 stroke-width=%2216%22 stroke-linecap=%22round%22/></svg>",
-      "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["utilities", "productivity", "entertainment"],
-  "lang": "id",
-  "dir": "ltr",
-  "shortcuts": [
-    {
-      "name": "Download Video",
-      "short_name": "Download",
-      "description": "Download video from all platforms",
-      "url": "/"
-    },
-    {
-      "name": "Download Music",
-      "short_name": "Music",
-      "description": "Download music from Spotify, YouTube",
-      "url": "/?mode=music"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221200%22 height=%22630%22 viewBox=%220 0 1200 630%22><rect width=%221200%22 height=%22630%22 fill=%220f172a%22/><text x=%22600%22 y=%22280%22 font-family=%22Arial%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22>Multi Downloader PRO</text><text x=%22600%22 y=%22350%22 font-family=%22Arial%22 font-size=%2228%22 fill=%22%2390a4ae%22 text-anchor=%22middle%22>Premium Video & Music Downloader</text></svg>",
-      "sizes": "1200x630",
-      "type": "image/svg+xml",
-      "form_factor": "wide"
+      "type": "image/svg+xml"
     }
   ]
 }
