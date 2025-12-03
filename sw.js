@@ -1,9 +1,8 @@
 // Service Worker for Multi Downloader
-const CACHE_NAME = 'multi-downloader-v1.0';
+const CACHE_NAME = 'multi-downloader-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json'
+  '/index.html'
 ];
 
 // Install event
@@ -36,8 +35,9 @@ self.addEventListener('activate', event => {
 
 // Fetch event
 self.addEventListener('fetch', event => {
-  // Skip API requests
-  if (event.request.url.includes('api.ootaizumi.web.id')) {
+  // Skip API requests and blob URLs
+  if (event.request.url.includes('api.ootaizumi.web.id') || 
+      event.request.url.startsWith('blob:')) {
     return;
   }
   
@@ -70,19 +70,24 @@ self.addEventListener('fetch', event => {
         if (event.request.headers.get('accept').includes('text/html')) {
           return caches.match('/');
         }
+        // Return offline page for other requests
+        return new Response('Anda sedang offline. Cek koneksi internet Anda.', {
+          status: 503,
+          statusText: 'Offline',
+          headers: new Headers({'Content-Type': 'text/plain'})
+        });
       })
   );
 });
 
-// Background sync for failed downloads
+// Background sync (optional)
 self.addEventListener('sync', event => {
   if (event.tag === 'sync-downloads') {
-    console.log('Background sync for downloads');
-    // You could implement retry logic here
+    console.log('Background sync triggered');
   }
 });
 
-// Push notification
+// Push notification (optional)
 self.addEventListener('push', event => {
   const options = {
     body: event.data ? event.data.text() : 'Multi Downloader siap digunakan!',
@@ -95,7 +100,7 @@ self.addEventListener('push', event => {
     },
     actions: [
       {
-        action: 'explore',
+        action: 'open',
         title: 'Buka Aplikasi'
       }
     ]
@@ -110,7 +115,7 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   
-  if (event.action === 'explore') {
+  if (event.action === 'open') {
     event.waitUntil(
       clients.openWindow('/')
     );
