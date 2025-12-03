@@ -50,24 +50,30 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* Header & Navigation */
         header {
-            padding: 25px 0;
+            padding: 20px 0;
             position: relative;
             z-index: 10;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
+            gap: 10px;
         }
 
         .logo h1 {
             font-family: 'Orbitron', sans-serif;
             font-weight: 700;
-            font-size: 2.5rem;
+            font-size: 2rem;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             background-clip: text;
@@ -76,11 +82,61 @@
             letter-spacing: 1px;
         }
 
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(108, 99, 255, 0.2);
+            color: var(--primary);
+        }
+
+        nav a i {
+            font-size: 1.1rem;
+        }
+
         .tagline {
             text-align: center;
             color: var(--text-muted);
             font-size: 1rem;
-            margin-bottom: 20px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .main-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Main Card */
@@ -269,6 +325,58 @@
             transition: width 0.5s ease;
         }
 
+        /* Preview Section */
+        .preview-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .preview-section.active {
+            display: block;
+        }
+
+        .preview-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            margin-top: 15px;
+        }
+
+        .video-preview {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 10px;
+            margin: 0 auto;
+            display: block;
+            background: #000;
+        }
+
+        .preview-info {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
         /* Results Section */
         .results-section {
             margin-top: 30px;
@@ -395,6 +503,104 @@
             color: var(--text);
         }
 
+        /* About Page */
+        .about-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--glow);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .creator-profile {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .creator-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .creator-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .creator-tagline {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .about-content {
+            margin-bottom: 40px;
+        }
+
+        .about-text {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li i {
+            color: var(--success);
+        }
+
+        .contact-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            width: 30px;
+        }
+
         /* Footer */
         footer {
             margin-top: 50px;
@@ -418,8 +624,17 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
             .logo h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .url-input-wrapper {
@@ -437,10 +652,18 @@
             .results-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .about-card {
+                padding: 25px;
+            }
+            
+            .creator-name {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
-            .main-card {
+            .main-card, .about-card {
                 padding: 20px;
             }
             
@@ -448,8 +671,23 @@
                 font-size: 1.5rem;
             }
             
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                padding: 6px 12px;
+                font-size: 1rem;
+            }
+            
             .platforms-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .creator-avatar {
+                width: 120px;
+                height: 120px;
+                font-size: 3rem;
             }
         }
     </style>
@@ -457,13 +695,25 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">
-                <h1>【﻿𝕀𝕥𝕤𝕓𝕒𝕕】Multi Downloader</h1>
+            <div class="header-container">
+                <div class="logo">
+                    <div class="logo-icon">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</div>
+                    <h1>Multi Downloader</h1>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#" id="homeLink" class="active"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="#" id="aboutLink"><i class="fas fa-info-circle"></i> Tentang</a></li>
+                    </ul>
+                </nav>
+                
+                <p class="tagline">Unduh konten dari berbagai platform dengan satu kode</p>
             </div>
-            <p class="tagline">Unduh konten dari berbagai platform dengan satu kode</p>
         </header>
 
-        <main>
+        <!-- Home Page -->
+        <main class="main-content active" id="homePage">
             <div class="main-card">
                 <div class="card-title">
                     <i class="fas fa-download"></i>
@@ -512,6 +762,23 @@
                     </div>
                 </div>
 
+                <!-- Preview Section -->
+                <div class="preview-section" id="previewSection">
+                    <div class="card-title">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Preview Video</span>
+                    </div>
+                    <div class="preview-container">
+                        <video class="video-preview" id="videoPreview" controls>
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="preview-info" id="previewInfo">
+                            <!-- Preview info akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
                 <div class="results-section" id="resultsSection">
                     <div class="card-title">
                         <i class="fas fa-file-download"></i>
@@ -534,9 +801,88 @@
             </div>
         </main>
 
+        <!-- About Page -->
+        <main class="main-content" id="aboutPage">
+            <div class="about-section">
+                <div class="about-card">
+                    <div class="creator-profile">
+                        <div class="creator-avatar">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</div>
+                        <h2 class="creator-name">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</h2>
+                        <p class="creator-tagline">Developer & Content Creator</p>
+                    </div>
+
+                    <div class="about-content">
+                        <h3 class="card-title">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Tentang Saya</span>
+                        </h3>
+                        
+                        <div class="about-text">
+                            <p>Halo! Saya <strong>【﻿𝕀𝕥𝕤𝕓𝕒𝕕】</strong>, seorang developer dan content creator yang passion di bidang teknologi dan multimedia.</p>
+                            
+                            <p>Saya membuat Multi Downloader ini untuk memudahkan pengguna mengunduh konten dari berbagai platform dengan mudah dan cepat. Tools ini dirancang dengan antarmuka yang user-friendly dan fitur yang lengkap.</p>
+                            
+                            <p>Sebagai developer, saya selalu berusaha membuat tools yang bermanfaat bagi komunitas digital. Saya percaya bahwa teknologi harus dapat diakses oleh semua orang dengan cara yang mudah dan efisien.</p>
+                        </div>
+
+                        <h3 class="card-title" style="margin-top: 30px;">
+                            <i class="fas fa-star"></i>
+                            <span>Fitur Preview Video</span>
+                        </h3>
+                        
+                        <div class="about-text">
+                            <p>Fitur <strong>Preview Video</strong> memungkinkan Anda untuk melihat video sebelum mengunduhnya. Ini membantu Anda memastikan bahwa Anda mengunduh konten yang tepat sebelum proses download dimulai.</p>
+                            
+                            <p>Cara menggunakan fitur preview:</p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> Masukkan URL video yang ingin diunduh</li>
+                                <li><i class="fas fa-check-circle"></i> Klik tombol "Download"</li>
+                                <li><i class="fas fa-check-circle"></i> Sistem akan menampilkan preview video</li>
+                                <li><i class="fas fa-check-circle"></i> Tonton preview untuk memastikan video benar</li>
+                                <li><i class="fas fa-check-circle"></i> Pilih kualitas yang diinginkan dan unduh</li>
+                            </ul>
+                            
+                            <p>Fitur ini tersedia untuk platform yang mendukung preview seperti YouTube, Facebook, Instagram, dan TikTok.</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info">
+                        <h3 class="card-title">
+                            <i class="fas fa-envelope"></i>
+                            <span>Kontak & Dukungan</span>
+                        </h3>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-question-circle"></i>
+                            <div>
+                                <div class="info-label">Pertanyaan & Dukungan</div>
+                                <div class="info-value">Jika ada pertanyaan atau masalah, silakan hubungi saya</div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-bug"></i>
+                            <div>
+                                <div class="info-label">Laporkan Bug</div>
+                                <div class="info-value">Jika menemukan bug, tolong laporkan untuk perbaikan</div>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <div>
+                                <div class="info-label">Saran Fitur</div>
+                                <div class="info-value">Saran untuk fitur baru sangat saya hargai</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
         <footer>
-            <div class="footer-brand">【﻿𝕀𝕥𝕤𝕓𝕒𝕕】Multi Downloader</div>
-            <p>Dibuat dengan ❤️ oleh Itsbad | API oleh ootaizumi.web.id</p>
+            <div class="footer-brand">【﻿𝕀𝕥𝕤𝕓𝕕】Multi Downloader</div>
+            <p>Dibuat dengan ❤️ oleh 【﻿𝕀𝕥𝕤𝕓𝕒𝕕】 | API oleh ootaizumi.web.id</p>
             <p>Hanya untuk penggunaan pribadi. Harap menghormati hak cipta.</p>
         </footer>
     </div>
@@ -574,6 +920,9 @@
             youtube: 'https://api.ootaizumi.web.id/downloader/youtube-play?query='
         };
 
+        // Platform yang mendukung preview
+        const platformsWithPreview = ['youtube', 'facebook', 'instagram', 'tiktok', 'twitter'];
+
         // DOM Elements
         const platformSelect = document.getElementById('platformSelect');
         const urlInput = document.getElementById('urlInput');
@@ -583,9 +932,16 @@
         const statusText = document.getElementById('statusText');
         const statusPercent = document.getElementById('statusPercent');
         const progressFill = document.getElementById('progressFill');
+        const previewSection = document.getElementById('previewSection');
+        const videoPreview = document.getElementById('videoPreview');
+        const previewInfo = document.getElementById('previewInfo');
         const resultsSection = document.getElementById('resultsSection');
         const resultsGrid = document.getElementById('resultsGrid');
         const platformsGrid = document.getElementById('platformsGrid');
+        const homePage = document.getElementById('homePage');
+        const aboutPage = document.getElementById('aboutPage');
+        const homeLink = document.getElementById('homeLink');
+        const aboutLink = document.getElementById('aboutLink');
 
         // Initialize platform cards
         function initPlatformCards() {
@@ -622,7 +978,7 @@
             if (platform === 'ncs') {
                 urlInput.placeholder = 'Masukkan Track ID NCS...';
             } else if (platform === 'youtube') {
-                urlInput.placeholder = 'Masukkan query pencarian YouTube...';
+                urlInput.placeholder = 'Masukkan URL video YouTube...';
             } else {
                 urlInput.placeholder = 'Masukkan URL...';
             }
@@ -665,8 +1021,50 @@
             progressFill.style.width = `${percent}%`;
         }
 
+        // Tampilkan preview video
+        function showPreview(platform, videoData) {
+            if (!platformsWithPreview.includes(platform)) {
+                previewSection.classList.remove('active');
+                return;
+            }
+            
+            previewSection.classList.add('active');
+            
+            // Set video source
+            if (videoData.previewUrl) {
+                videoPreview.src = videoData.previewUrl;
+            } else {
+                // Fallback untuk demo - gunakan video placeholder
+                videoPreview.src = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+            }
+            
+            // Isi informasi preview
+            previewInfo.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">Platform</div>
+                    <div class="info-value">${platform.charAt(0).toUpperCase() + platform.slice(1)}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Judul</div>
+                    <div class="info-value">${videoData.title || 'Video Preview'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Durasi</div>
+                    <div class="info-value">${videoData.duration || '2:30'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Kualitas Tersedia</div>
+                    <div class="info-value">${videoData.qualities || 'HD, SD, Audio'}</div>
+                </div>
+            `;
+            
+            // Scroll ke preview
+            previewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
         // Format ukuran file
         function formatFileSize(bytes) {
+            if (!bytes) return 'Ukuran tidak tersedia';
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -679,13 +1077,11 @@
             resultsSection.classList.add('active');
             resultsGrid.innerHTML = '';
             
-            // Simulasi data hasil (karena API sebenarnya mungkin merespons berbeda)
-            // Dalam implementasi nyata, Anda akan memproses respons API sebenarnya
-            
+            // Data contoh untuk demo
             const sampleResults = [
-                { quality: 'HD', size: '15.2 MB', format: 'MP4', url: '#' },
-                { quality: 'SD', size: '8.7 MB', format: 'MP4', url: '#' },
-                { quality: 'Audio', size: '3.4 MB', format: 'MP3', url: '#' }
+                { quality: 'HD 1080p', size: '15.2 MB', format: 'MP4', resolution: '1920x1080', bitrate: '5000 kbps' },
+                { quality: 'SD 720p', size: '8.7 MB', format: 'MP4', resolution: '1280x720', bitrate: '2500 kbps' },
+                { quality: 'Audio', size: '3.4 MB', format: 'MP3', resolution: 'Audio only', bitrate: '192 kbps' }
             ];
             
             sampleResults.forEach((result, index) => {
@@ -693,14 +1089,16 @@
                 card.className = 'result-card';
                 card.innerHTML = `
                     <div class="result-header">
-                        <div class="result-title">${platform} Download</div>
-                        <div class="result-quality">${result.quality}</div>
+                        <div class="result-title">${platform} ${result.quality}</div>
+                        <div class="result-quality">${result.quality.includes('HD') ? 'HD' : result.quality.includes('SD') ? 'SD' : 'AUDIO'}</div>
                     </div>
                     <div class="result-info">
                         <div><i class="fas fa-file"></i> Format: ${result.format}</div>
+                        <div><i class="fas fa-expand-alt"></i> Resolusi: ${result.resolution}</div>
                         <div><i class="fas fa-weight-hanging"></i> Ukuran: ${result.size}</div>
+                        <div><i class="fas fa-tachometer-alt"></i> Bitrate: ${result.bitrate}</div>
                     </div>
-                    <button class="result-download-btn" data-url="${result.url}">
+                    <button class="result-download-btn" data-quality="${result.quality}">
                         <i class="fas fa-download"></i>
                         <span>Download ${result.format}</span>
                     </button>
@@ -710,7 +1108,14 @@
                 const downloadBtn = card.querySelector('.result-download-btn');
                 downloadBtn.addEventListener('click', () => {
                     // Simulasi download
-                    updateStatus(true, 'Mengunduh file...', 100);
+                    updateStatus(true, `Mengunduh ${result.quality}...`, 100);
+                    
+                    // Buat link download (untuk demo, gunakan placeholder)
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = '#';
+                    downloadLink.download = `downloaded_video_${result.quality}.${result.format.toLowerCase()}`;
+                    downloadLink.click();
+                    
                     setTimeout(() => {
                         updateStatus(false, '', 0);
                         alert(`Download ${result.format} (${result.quality}) berhasil dimulai!`);
@@ -756,46 +1161,58 @@
                 apiUrl = `${endpoint}${encodeURIComponent(url)}`;
             }
             
-            // Simulasi proses (karena CORS mungkin memblokir request langsung)
-            // Dalam implementasi nyata, Anda akan menggunakan fetch() untuk mengambil data dari API
-            
+            // Simulasi proses
             updateStatus(true, 'Mengambil data dari server...', 30);
-            
-            // Simulasi delay
             await new Promise(resolve => setTimeout(resolve, 1000));
             
             updateStatus(true, 'Memproses konten...', 60);
-            
-            // Simulasi delay
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            updateStatus(true, 'Menyiapkan hasil download...', 90);
-            
-            // Simulasi delay
+            updateStatus(true, 'Menyiapkan preview...', 80);
             await new Promise(resolve => setTimeout(resolve, 800));
             
             updateStatus(false, '', 0);
             
-            // Tampilkan hasil (simulasi)
+            // Tampilkan preview (jika platform mendukung)
             const platformName = platforms.find(p => p.id === detectedPlatform)?.name || detectedPlatform;
-            displayResults({}, platformName);
             
-            // Scroll ke hasil
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            // Data contoh untuk preview
+            const videoData = {
+                title: `Video ${platformName} - ${new Date().toLocaleDateString()}`,
+                duration: '2:45',
+                qualities: 'HD 1080p, SD 720p, Audio',
+                previewUrl: detectedPlatform === 'youtube' ? 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' : null
+            };
             
-            // Catatan: Dalam implementasi nyata, Anda akan menggunakan:
-            /*
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                // Proses data dan tampilkan hasil
-                displayResults(data, platformName);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengambil data. Coba lagi nanti.');
-                updateStatus(false, '', 0);
+            showPreview(detectedPlatform, videoData);
+            
+            // Tampilkan hasil download
+            setTimeout(() => {
+                displayResults({}, platformName);
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+        }
+
+        // Navigasi halaman
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.main-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Tampilkan halaman yang dipilih
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigasi aktif
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if (pageId === 'homePage') {
+                homeLink.classList.add('active');
+            } else {
+                aboutLink.classList.add('active');
             }
-            */
         }
 
         // Event Listeners
@@ -809,15 +1226,28 @@
             }
         });
 
+        // Navigasi
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('homePage');
+        });
+        
+        aboutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('aboutPage');
+        });
+
         // Inisialisasi
         document.addEventListener('DOMContentLoaded', () => {
             initPlatformCards();
             updatePlaceholder();
             
-            // Tambahkan efek untuk logo
-            const logo = document.querySelector('.logo h1');
+            // Efek visual untuk logo
+            const logoIcon = document.querySelector('.logo-icon');
             setInterval(() => {
-                logo.style.textShadow = `0 0 15px rgba(${Math.random() * 255}, ${Math.random() * 255}, 255, 0.7)`;
+                const hue = Math.floor(Math.random() * 360);
+                logoIcon.style.color = `hsl(${hue}, 80%, 65%)`;
+                logoIcon.style.textShadow = `0 0 15px hsl(${hue}, 80%, 65%)`;
             }, 3000);
         });
     </script>
